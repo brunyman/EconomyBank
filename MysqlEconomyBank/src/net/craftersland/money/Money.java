@@ -133,7 +133,7 @@ public final class Money extends JavaPlugin {
     }
     //Check if TitleManager is available
     public boolean setupTitleManager() {
-    	if (getServer().getPluginManager().getPlugin("TitleManager") != null && getServer().getPluginManager().getPlugin("TitleManager").isEnabled()) {
+    	if (getServer().getPluginManager().getPlugin("TitleManager") != null) {
         	return true;
         }
           else {
