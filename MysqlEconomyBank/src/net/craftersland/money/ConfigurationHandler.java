@@ -50,6 +50,11 @@ public class ConfigurationHandler {
 			List<String> message = new ArrayList<String>();
 			message.add(money.getConfig().getString(messageKey));
 			
+			//if message is set to '' cancel the message
+			if (getString(messageKey).equals("")) {
+				return;
+			}
+			
 			if (player2 != null && !player2.equals("")) {
 				message.set(0, message.get(0).replaceAll("%player2", player2Name));
 			}

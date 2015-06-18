@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.2
+# config version 1.3
 
 database:
     #Type of database, Options: FlatFile or MySQL
@@ -39,6 +39,7 @@ chatMessages:
     #Chat Messages - Supports Color/Format codes.
     #The place holder  %amount  will get replaced by the money amount.
     #The place holder  %player2  will get replaced by the players name.
+    #To disable any chat message set it to ''  Example: balance: ''
     createdSignSuccessfully: '&bCreated sign succesfully!'
     notAllowed: '&bYou do not have permission.'
     removedSignSuccessfully: '&bSign removed!'
