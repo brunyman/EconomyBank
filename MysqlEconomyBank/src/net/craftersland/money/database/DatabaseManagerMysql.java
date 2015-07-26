@@ -79,6 +79,7 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 	}
 	
 	public Connection getConnection() {
+		checkConnection();
 		return conn;
 	}
 	
@@ -91,6 +92,58 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean checkConnection() {
+		try {
+			if (conn == null) {
+				Money.log.warning("Connection failed. Reconnecting...");
+				if (reConnect() == true) return true;
+				return false;
+			}
+			if (!conn.isValid(3)) {
+				Money.log.warning("Connection is idle or terminated. Reconnecting...");
+				if (reConnect() == true) return true;
+				return false;
+			}
+			if (conn.isClosed() == true) {
+				Money.log.warning("Connection is closed. Reconnecting...");
+				if (reConnect() == true) return true;
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			Money.log.severe("Could not reconnect to Database!");
+		}
+		return true;
+	}
+	
+	public boolean reConnect() {
+		try {
+			dbHost = money.getConfigurationHandler().getString("database.mysql.host");
+            dbPort = money.getConfigurationHandler().getString("database.mysql.port");
+            database = money.getConfigurationHandler().getString("database.mysql.databaseName");
+            dbUser = money.getConfigurationHandler().getString("database.mysql.user");
+            dbPassword = money.getConfigurationHandler().getString("database.mysql.password");
+            
+            String passFix = dbPassword.replaceAll("%", "%25");
+            String passFix2 = passFix.replaceAll("\\+", "%2B");
+            
+            long start = 0;
+			long end = 0;
+			
+		    start = System.currentTimeMillis();
+		    Money.log.info("Attempting to establish a connection to the MySQL server!");
+		    Class.forName("com.mysql.jdbc.Driver");
+		    conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":" + dbPort + "/" + database + "?" + "user=" + dbUser + "&" + "password=" + passFix2);
+		    end = System.currentTimeMillis();
+		    Money.log.info("Connection to MySQL server established!");
+		    Money.log.info("Connection took " + ((end - start)) + "ms!");
+            return true;
+		} catch (Exception e) {
+			Money.log.severe("Could not connect to MySQL server! because: " + e.getMessage());
+			return false;
+		}
 	}
 
 }

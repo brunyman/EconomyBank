@@ -16,11 +16,11 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	public MoneyMysqlInterface(Money money) {
 		this.money = money;
-		this.conn = ((DatabaseManagerMysql)money.getDatabaseManagerInterface()).getConnection();
 	}
 	
 	@Override
 	public boolean hasAccount(UUID player) {
+		conn = money.getDatabaseManagerInterface().getConnection();
 		      try {
 		    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
 		 
@@ -42,6 +42,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public boolean createAccount(UUID player) {
+		conn = money.getDatabaseManagerInterface().getConnection();
 		try {
 			tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
 			 
@@ -64,7 +65,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		
+		conn = money.getDatabaseManagerInterface().getConnection();
 	      try {
 	    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
 	 
@@ -88,7 +89,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		
+		conn = money.getDatabaseManagerInterface().getConnection();
         try {
             tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
         	
@@ -110,7 +111,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		
+		conn = money.getDatabaseManagerInterface().getConnection();
 		if (amount < 0) {
 			return removeFromAccount(player, -amount);
 		}
@@ -128,7 +129,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		
+		conn = money.getDatabaseManagerInterface().getConnection();
 		if (amount < 0) {
 			return addToAccount(player, -amount);
 		}

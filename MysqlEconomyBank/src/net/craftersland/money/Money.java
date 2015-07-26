@@ -32,6 +32,7 @@ public final class Money extends JavaPlugin {
 	private ConfigurationHandler configurationHandler;
 	private DatabaseManagerInterface databaseManager;
 	private AccountDatabaseInterface<Double> moneyDatabaseInterface;
+	private boolean enabled = false;
 	
 	@Override
     public void onEnable(){
@@ -96,13 +97,13 @@ public final class Money extends JavaPlugin {
     	} else {
     		log.info("Interest task is disabled.");
     	}
-    	
+    	enabled = true;
     	log.info("MysqlEconomyBank has been successfully loaded!");
 	}
 	
 	@Override
 	public void onDisable() {
-		if (this.isEnabled()) {
+		if (enabled == true) {
 			//Closing database connection
 			if (databaseManager.getConnection() != null) {
 				log.info("Closing MySQL connection...");
@@ -142,11 +143,10 @@ public final class Money extends JavaPlugin {
     }
     
     //Interest task
-    @SuppressWarnings("deprecation")
-	public void interestTask() {
+    public void interestTask() {
     	int time = Integer.parseInt(getConfigurationHandler().getString("general.interest.interestTime"));
     	
-    	Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+    	Bukkit.getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
     		public void run() {
     			onlinePlayers.addAll(Bukkit.getOnlinePlayers());
     			if (onlinePlayers.isEmpty() == true) return;
