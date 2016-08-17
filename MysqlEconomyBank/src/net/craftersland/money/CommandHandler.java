@@ -1,9 +1,5 @@
 package net.craftersland.money;
 
-import java.io.File;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -21,9 +17,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	public boolean onCommand(final CommandSender sender, final Command command, final String cmdlabel, final String[] args) {
 		Player p;
-		
 		if (cmdlabel.equalsIgnoreCase("meb") || cmdlabel.equalsIgnoreCase("bank")) {
-			
 			if (args.length == 0) {
 				if (sender instanceof Player) {
 					p = (Player) sender;
@@ -33,43 +27,10 @@ public class CommandHandler implements CommandExecutor {
 					sendConsoleHelp(sender);
 					return false;
 				}
-			}
-			
-			if (args.length == 1) {
-				
+			} else 	if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
-					if (sender instanceof Player) {
-						p = (Player) sender;
-						if (p.hasPermission("MysqlEconomyBank.admin")) {
-							try {
-								money.getConfig().load(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"config.yml"));
-							} catch (Exception e) {
-								money.getConfigurationHandler().printMessage(p, "chatMessages.reloadFail", "0", p.getUniqueId(), p.getName());
-								p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-								e.printStackTrace();
-								return false;
-							}
-							p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 1);
-							money.getConfigurationHandler().printMessage(p, "chatMessages.reloadComplete", "0", p.getUniqueId(), p.getName());
-							return true;
-						}
-						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-						money.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p.getUniqueId(), p.getName());
-						return false;
-					} else {
-						try {
-							money.getConfig().load(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"config.yml"));
-						} catch (Exception e) {
-							sender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ">> " + ChatColor.RED + "Could not load config! Check logs!");
-							e.printStackTrace();
-							return false;
-						}
-						sender.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + ">> " + ChatColor.GREEN + "Configuration reloaded!");
-						return true;
-					}
-				}
-				
-				if (args[0].equalsIgnoreCase("help")) {
+					money.getReloadCmd().runCmd(sender);
+				} else if (args[0].equalsIgnoreCase("help")) {
 					if (sender instanceof Player) {
 						p = (Player) sender;
 						sendHelp(p);
@@ -78,89 +39,25 @@ public class CommandHandler implements CommandExecutor {
 						sendConsoleHelp(sender);
 						return false;
 					}
-				}
-				
-				if (sender instanceof Player) {
-					p = (Player) sender;
-					sendHelp(p);
-					return false;
+				} if (args[0].equalsIgnoreCase("balance")) {
+					money.getBalanceCmd().runUserCmd(sender);
 				} else {
-					sendConsoleHelp(sender);
-					return false;
+					if (sender instanceof Player) {
+						p = (Player) sender;
+						sendHelp(p);
+						return false;
+					} else {
+						sendConsoleHelp(sender);
+						return false;
+					}
 				}
-			}
-			
-			if (args.length == 2) {
-				
+			} else if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("balance")) {
-					if (sender instanceof Player) {
-						p = (Player) sender;
-						if (p.hasPermission("MysqlEconomyBank.admin")) {
-							Player target = Bukkit.getPlayer(args[1]);
-							if (target != null) {
-								if (target.isOnline()) {
-									if (money.getMoneyDatabaseInterface().hasAccount(target.getUniqueId()) == false) {
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.accountDoesNotExist", "0", target.getUniqueId(), target.getName());
-										p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-										return false;
-									}
-									String amount = money.getMoneyDatabaseInterface().getBalance(target.getUniqueId()).toString();
-									money.getConfigurationHandler().printMessage(target, "chatMessages.balanceCommand", amount, target.getUniqueId(), target.getName());
-									p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
-									return true;
-								    }
-								} else {
-									try {
-										UUID targetUUID = UUID.fromString(args[1]);
-										if (money.getMoneyDatabaseInterface().hasAccount(targetUUID) == false) {
-											money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.accountDoesNotExist", "0", targetUUID, targetUUID.toString());
-											p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-											return false;
-										}
-										String amount = money.getMoneyDatabaseInterface().getBalance(targetUUID).toString();
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.balanceCommand", amount, targetUUID, targetUUID.toString());
-										p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
-										return true;
-									} catch (Exception e) {
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.balanceCommandFail", "0", null, null);
-										p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-										return false;
-									}
-							}
-							
-						} else {
-							p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-							money.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p.getUniqueId(), p.getName());
-							return false;
-						}
-					} else {
-						Player target = Bukkit.getPlayer(args[1]);
-						if (target != null) {
-							if (target.isOnline()) {
-								if (money.getMoneyDatabaseInterface().hasAccount(target.getUniqueId()) == false) {
-									sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.RED + " does not have an account!");
-									return false;
-								}
-								String amount = money.getMoneyDatabaseInterface().getBalance(target.getUniqueId()).toString();
-								sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
-								return true;
-							    }
-							} else {
-								try {
-									UUID targetUUID = UUID.fromString(args[1]);
-									if (money.getMoneyDatabaseInterface().hasAccount(targetUUID) == false) {
-										sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + targetUUID + ChatColor.RED + " does not have an account!");
-										return false;
-									}
-									String amount = money.getMoneyDatabaseInterface().getBalance(targetUUID).toString();
-									sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + targetUUID + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
-									return true;
-								} catch (Exception e) {
-									sender.sendMessage(ChatColor.RED +  ">> Player offline or wrong UUID!");
-									return false;
-								}
-						}
-					}
+					money.getBalanceCmd().runAdminCmd(sender, args);
+				} else if (args[0].equalsIgnoreCase("deposit")) {
+					money.getDepositCmd().runUserCmd(sender, args);
+				} else if (args[0].equalsIgnoreCase("withdraw")) {
+					money.getWithdrawCmd().runUserCmd(sender, args);
 				} else {
 					if (sender instanceof Player) {
 						p = (Player) sender;
@@ -171,114 +68,13 @@ public class CommandHandler implements CommandExecutor {
 						return false;
 					}
 				}
-				
-			}
-			
-			if (args.length == 3) {
-				
+			} else if (args.length == 3) {
 				if (args[0].equalsIgnoreCase("set")) {
-					if (sender instanceof Player) {
-						p = (Player) sender;
-						if (p.hasPermission("MysqlEconomyBank.admin")) {
-							Player target = Bukkit.getPlayer(args[1]);
-							if (target != null) {
-								if (target.isOnline()) {
-									if (money.getMoneyDatabaseInterface().hasAccount(target.getUniqueId()) == false) {
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.accountDoesNotExist", "0", target.getUniqueId(), target.getName());
-										p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-										return false;
-									}
-									
-									try {
-										Double amount = Double.parseDouble(args[2]);
-										money.getMoneyDatabaseInterface().setBalance(target.getUniqueId(), amount);
-										money.getConfigurationHandler().printMessage(target, "chatMessages.setCommand", amount.toString(), target.getUniqueId(), target.getName());
-										p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
-										return true;
-									} catch (Exception e) {
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.setCommandFail", "0", null, null);
-										p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-										return false;
-									}
-									
-								    }
-								} else {
-									try {
-										UUID targetUUID = UUID.fromString(args[1]);
-										if (money.getMoneyDatabaseInterface().hasAccount(targetUUID) == false) {
-											money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.accountDoesNotExist", "0", targetUUID, targetUUID.toString());
-											p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-											return false;
-										}
-										
-										try {
-											Double amount = Double.parseDouble(args[2]);
-											money.getMoneyDatabaseInterface().setBalance(targetUUID, amount);
-											money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.setCommand", amount.toString(), targetUUID, targetUUID.toString());
-											p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
-											return true;
-										} catch (Exception e) {
-											money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.setCommandFail", "0", null, null);
-											p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-											return false;
-										}
-										
-									} catch (Exception e) {
-										money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.balanceCommandFail", "0", null, null);
-										p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-										return false;
-									}
-							}
-							
-						} else {
-							p.playSound(p.getLocation(), Sound.NOTE_PLING, 1.0F, 1.0F);
-							money.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p.getUniqueId(), p.getName());
-							return false;
-						}
-					} else {
-						Player target = Bukkit.getPlayer(args[1]);
-						if (target != null) {
-							if (target.isOnline()) {
-								if (money.getMoneyDatabaseInterface().hasAccount(target.getUniqueId()) == false) {
-									sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.RED + " does not have an account!");
-									return false;
-								}
-								
-								try {
-									Double amount = Double.parseDouble(args[2]);
-									money.getMoneyDatabaseInterface().setBalance(target.getUniqueId(), amount);
-									sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.GREEN + " balance set to: " + ChatColor.WHITE + "" + amount);
-									return true;
-								} catch (Exception e) {
-									sender.sendMessage(ChatColor.RED +  ">> The amount must be a number!");
-									return false;
-								}
-								
-							    }
-							} else {
-								try {
-									UUID targetUUID = UUID.fromString(args[1]);
-									if (money.getMoneyDatabaseInterface().hasAccount(targetUUID) == false) {
-										sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + targetUUID + ChatColor.RED + " does not have an account!");
-										return false;
-									}
-									
-									try {
-										Double amount = Double.parseDouble(args[2]);
-										money.getMoneyDatabaseInterface().setBalance(targetUUID, amount);
-										sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + targetUUID + ChatColor.GREEN + " balance set to: " + ChatColor.WHITE + "" + amount);
-										return true;
-									} catch (Exception e) {
-										sender.sendMessage(ChatColor.RED +  ">> The amount must be a number!");
-										return false;
-									}
-									
-								} catch (Exception e) {
-									sender.sendMessage(ChatColor.RED +  ">> Player offline or wrong UUID!");
-									return false;
-								}
-						}
-					}
+					money.getSetCmd().runCmd(sender, args);
+				} else if (args[0].equalsIgnoreCase("deposit")) {
+					money.getDepositCmd().runAdminCmd(sender, args);
+				} else if (args[0].equalsIgnoreCase("withdraw")) {
+					money.getWithdrawCmd().runAdminCmd(sender);
 				} else {
 					if (sender instanceof Player) {
 						p = (Player) sender;
@@ -296,7 +92,11 @@ public class CommandHandler implements CommandExecutor {
 	}
 	
 	public void sendHelp(Player p) {
-		p.playSound(p.getLocation(), Sound.ANVIL_LAND, 1, 1);
+		if (money.is19Server == true) {
+			p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
+		} else {
+			p.playSound(p.getLocation(), Sound.valueOf("ANVIL_LAND"), 1.0F, 1.0F);
+		}
 		p.sendMessage(" ");
 		p.sendMessage(ChatColor.DARK_AQUA + "-=-=-=-=-=-=-=-< " + ChatColor.AQUA + "" + ChatColor.BOLD + "MysqlEconomyBank" + ChatColor.DARK_AQUA + " >-=-=-=-=-=-=-=-=-");
 		if (p.hasPermission("MysqlEconomyBank.admin")) {
@@ -315,6 +115,15 @@ public class CommandHandler implements CommandExecutor {
 			p.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + ">> " + ChatColor.WHITE + "/bank reload");
 			p.sendMessage(" ");
 			p.sendMessage(ChatColor.DARK_AQUA + "-=-=-=-=-=-=-=-=-< " + ChatColor.AQUA + "" + ChatColor.BOLD + "Admin Help Page" + ChatColor.DARK_AQUA + " >-=-=-=-=-=-=-=-=-");
+			p.sendMessage(" ");
+		} else if (p.hasPermission("MysqlEconomyBank.balance") || p.hasPermission("MysqlEconomyBank.deposit") || p.hasPermission("MysqlEconomyBank.withdraw")) {
+			p.sendMessage(" ");
+			p.sendMessage(ChatColor.AQUA + "        Check your bank balance:");
+			p.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + ">> " + ChatColor.WHITE + "/bank balance");
+			p.sendMessage(ChatColor.AQUA + "        Deposit money in your bank:");
+			p.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + ">> " + ChatColor.WHITE + "/bank deposit <amount>");
+			p.sendMessage(ChatColor.AQUA + "        Withdraw money from your bank:");
+			p.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + ">> " + ChatColor.WHITE + "/bank withdraw <amount>");
 			p.sendMessage(" ");
 		} else {
 			p.sendMessage(" ");

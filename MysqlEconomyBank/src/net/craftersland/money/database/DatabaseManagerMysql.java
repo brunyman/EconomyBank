@@ -2,7 +2,10 @@ package net.craftersland.money.database;
 
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -11,27 +14,26 @@ import net.craftersland.money.Money;
 public class DatabaseManagerMysql implements DatabaseManagerInterface{
 	
 	private Connection conn = null;
-	private String tableName = "meb_accounts";
 	  
-	  // Hostname
-	  private String dbHost;
-	 
-	  // Port -- Standard: 3306
-	  private String dbPort;
-	 
-	  // Databankname
-	  private String database;
-	 
-	  // Databank username
-	  private String dbUser;
-	 
-	  // Databank password
-	  private String dbPassword;
+	// Hostname
+	private String dbHost;
+	// Port -- Standard: 3306
+	private String dbPort;
+	// Databankname
+	private String database;
+	// Databank username
+	private String dbUser;
+	// Databank password
+	private String dbPassword;
 
 	private Money money;
 	
+	public String dataTableName;
+	
 	public DatabaseManagerMysql(Money money) {
 		this.money = money;
+		
+		dataTableName = money.getConfigurationHandler().getString("database.mysql.tableName");
 		
 		setupDatabase();
 	}
@@ -53,45 +55,44 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
             
             //Connect to database
             conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":" + dbPort + "/" + database + "?" + "user=" + dbUser + "&" + "password=" + passFix2);
-           
+            Money.log.warning("Database connection established!");
           } catch (ClassNotFoundException e) {
-            Money.log.severe("Could not locate drivers for mysql!");
+        	  Money.log.severe("Could not locate drivers for mysql!");
             return false;
           } catch (SQLException e) {
-            Money.log.severe("Could not connect to mysql database!");
+        	  Money.log.severe("Could not connect to mysql database!");
             return false;
           }
 		
 		//Create tables if needed
-	      Statement query;
+	      Statement query = null;
 	      try {
 	        query = conn.createStatement();
-	        tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
 	        
-	        String accounts = "CREATE TABLE IF NOT EXISTS `" + tableName + "` (id int(10) AUTO_INCREMENT, player_name varchar(50) NOT NULL UNIQUE, balance DOUBLE(30,2) NOT NULL, PRIMARY KEY(id));";
+	        String accounts = "CREATE TABLE IF NOT EXISTS `" + dataTableName + "` (id int(10) AUTO_INCREMENT, player_uuid varchar(50) NOT NULL UNIQUE, player_name varchar(50) NOT NULL, money double(30,2) NOT NULL, last_seen varchar(30) NOT NULL, sync_complete varchar(5) NOT NULL, PRIMARY KEY(id));";
 	        query.executeUpdate(accounts);
 	      } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
+	      } finally {
+	    	  if (query != null) {
+	    		  try {
+	    			  query.close();
+	    		  } catch (Exception e) {
+	    			  e.printStackTrace();
+	    		  }
+	    	  }
 	      }
-      Money.log.info("Mysql has been set up!");
+	      
+	      //Update Tables
+	      updateTables();
 		return true;
 	}
 	
+	@Override
 	public Connection getConnection() {
 		checkConnection();
 		return conn;
-	}
-	
-	@Override
-	public boolean closeDatabase() {
-		try {
-			conn.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 	
 	public boolean checkConnection() {
@@ -143,6 +144,80 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 		} catch (Exception e) {
 			Money.log.severe("Could not connect to MySQL server! because: " + e.getMessage());
 			return false;
+		}
+	}
+	
+	@Override
+	public boolean closeDatabase() {
+		try {
+			conn.close();
+			conn = null;
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void updateTables() {
+		if (conn != null) {
+			DatabaseMetaData md = null;
+	    	ResultSet rs1 = null;
+	    	ResultSet rs2 = null;
+	    	ResultSet rs3 = null;
+	    	PreparedStatement query1 = null;
+	    	PreparedStatement query2 = null;
+	    	PreparedStatement query3 = null;
+	    	try {
+	    		md = conn.getMetaData();
+	            rs1 = md.getColumns(null, null, dataTableName, "sync_complete");
+	            if (rs1.next()) {
+			    } else {
+			        String data = "ALTER TABLE `" + dataTableName + "` ADD sync_complete varchar(5) NOT NULL DEFAULT 'true';";
+			        query1 = conn.prepareStatement(data);
+			        query1.execute();
+			    }
+	            rs2 = md.getColumns(null, null, dataTableName, "player_name");
+	            if (rs2.next()) {
+			    } else {
+			        String data = "ALTER TABLE `" + dataTableName + "` ADD player_name varchar(50) NOT NULL DEFAULT 'true';";
+			        query2 = conn.prepareStatement(data);
+			        query2.execute();
+			    }
+	            rs3 = md.getColumns(null, null, dataTableName, "last_seen");
+	            if (rs3.next()) {
+			    } else {
+			        String data = "ALTER TABLE `" + dataTableName + "` ADD last_seen varchar(30) NOT NULL DEFAULT 'true';";
+			        query3 = conn.prepareStatement(data);
+			        query3.execute();
+			    }
+	    	} catch (Exception e) {
+	    		Money.log.severe("Error updating inventory table! Error: " + e.getMessage());
+    			e.printStackTrace();
+	    	} finally {
+	    		try {
+	    			if (query1 != null) {
+	    				query1.close();
+	    			}
+	    			if (query2 != null) {
+	    				query2.close();
+	    			}
+	    			if (query3 != null) {
+	    				query3.close();
+	    			}
+	    			if (rs1 != null) {
+	    				rs1.close();
+	    			}
+	    			if (rs2 != null) {
+	    				rs2.close();
+	    			}
+	    			if (rs3 != null) {
+	    				rs3.close();
+	    			}
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    	}
 		}
 	}
 

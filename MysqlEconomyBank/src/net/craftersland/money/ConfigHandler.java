@@ -6,18 +6,16 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import net.md_5.bungee.api.ChatColor;
-
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class ConfigurationHandler {
+public class ConfigHandler {
 	
 	private Money money;
 
 	//Config Generation and load
-	public ConfigurationHandler(Money money) {
+	public ConfigHandler(Money money) {
 		this.money = money;
 		if (!(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"config.yml").exists())) {
 			Money.log.info("No config file found! Creating new one...");
@@ -44,8 +42,17 @@ public class ConfigurationHandler {
 		}
 	}
 	
+	public Integer getInteger(String key) {
+		if (!money.getConfig().contains(key)) {
+			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
+			return 0;
+		} else {
+			return money.getConfig().getInt(key);
+		}
+	}
+	
 	//Send player messages using the config predefined messages
-	public void printMessage(Player player, String messageKey, String amount, UUID player2, String player2Name) {
+	public void printMessage(Player player, String messageKey, String amount, Player player2, String player2Name) {
 		if (money.getConfig().contains(messageKey)) {
 			List<String> message = new ArrayList<String>();
 			message.add(money.getConfig().getString(messageKey));
@@ -55,8 +62,10 @@ public class ConfigurationHandler {
 				return;
 			}
 			
-			if (player2 != null && !player2.equals("")) {
-				message.set(0, message.get(0).replaceAll("%player2", player2Name));
+			if (player2 != null) {
+				if (!player2.equals("")) {
+					message.set(0, message.get(0).replaceAll("%player2", player2Name));
+				}
 			}
 			
 			DecimalFormat f = new DecimalFormat("#,##0.00");
@@ -139,11 +148,11 @@ public class ConfigurationHandler {
 			}
 			//replace placeholders
 			DecimalFormat f = new DecimalFormat("#,##0.00");
-			if (money.getMoneyDatabaseInterface().getBalance(player.getUniqueId()).toString().endsWith(".0")) {
+			if (money.getMoneyDatabaseInterface().getBalance(player).toString().endsWith(".0")) {
 				DecimalFormat fr = new DecimalFormat("#,##0");
-				message.set(0, message.get(0).replaceAll("%bankBalance", "" + fr.format(money.getMoneyDatabaseInterface().getBalance(player.getUniqueId()))));
+				message.set(0, message.get(0).replaceAll("%bankBalance", "" + fr.format(money.getMoneyDatabaseInterface().getBalance(player))));
 			} else {
-				message.set(0, message.get(0).replaceAll("%bankBalance", "" + f.format(money.getMoneyDatabaseInterface().getBalance(player.getUniqueId()))));
+				message.set(0, message.get(0).replaceAll("%bankBalance", "" + f.format(money.getMoneyDatabaseInterface().getBalance(player))));
 			}
 			
 			if (Double.toString(Money.econ.getBalance(player)).endsWith(".0")) {
