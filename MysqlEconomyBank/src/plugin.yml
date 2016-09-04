@@ -5,6 +5,7 @@ website: www.craftersland.net
 load: STARTUP
 depend: [Vault]
 softdepend: [TitleManager]
+description: Sign Money Bank System
 commands:
     meb:
         description: The main command
