@@ -28,6 +28,7 @@ public class ReloadCmd {
 					e.printStackTrace();
 					return false;
 				}
+				money.getInterestHandler().resetTask();
 				money.getSoundHandler().sendLevelUpSound(p);
 				money.getConfigurationHandler().printMessage(p, "chatMessages.reloadComplete", "0", p, p.getName());
 				return true;

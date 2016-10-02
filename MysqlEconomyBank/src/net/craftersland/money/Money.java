@@ -1,15 +1,14 @@
 package net.craftersland.money;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import net.craftersland.money.commands.BalanceCmd;
 import net.craftersland.money.commands.DepositCmd;
+import net.craftersland.money.commands.InterestCmd;
 import net.craftersland.money.commands.ReloadCmd;
 import net.craftersland.money.commands.SetCmd;
 import net.craftersland.money.commands.WithdrawCmd;
@@ -23,7 +22,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -38,16 +36,18 @@ public final class Money extends JavaPlugin {
 	public String pluginName = "MysqlEconomyBank";
 	public Set<UUID> cooldown = new HashSet<UUID>();
 	
-	private ConfigHandler cH;
+	private static ConfigHandler cH;
 	private DatabaseManagerInterface databaseManager;
 	private AccountDatabaseInterface<Double> moneyDatabaseInterface;
 	private boolean enabled = false;
-	private SoundHandler sH;
-	private ReloadCmd rCmd;
-	private BalanceCmd bCmd;
-	private SetCmd sCmd;
-	private DepositCmd dCmd;
-	private WithdrawCmd wCmd;
+	private static SoundHandler sH;
+	private static ReloadCmd rCmd;
+	private static BalanceCmd bCmd;
+	private static SetCmd sCmd;
+	private static DepositCmd dCmd;
+	private static WithdrawCmd wCmd;
+	private static InterestHandler iH;
+	private static InterestCmd iCmd;
 	
 	@Override
     public void onEnable(){
@@ -78,7 +78,7 @@ public final class Money extends JavaPlugin {
         cH = new ConfigHandler(this);
         sH = new SoundHandler(this);
         
-      //Setup Database
+        //Setup Database
         if (cH.getString("database.typeOfDatabase").equalsIgnoreCase("mysql")) {
         	log.info("Using MySQL as Datasource...");
         	databaseManager = new DatabaseManagerMysql(this);
@@ -103,20 +103,14 @@ public final class Money extends JavaPlugin {
         sCmd = new SetCmd(this);
         dCmd = new DepositCmd(this);
         wCmd = new WithdrawCmd(this);
+        iH = new InterestHandler(this);
+        iCmd = new InterestCmd(this);
       //Register Listeners
     	PluginManager pm = getServer().getPluginManager();
     	pm.registerEvents(new PlayerListener(this), this);
     	CommandHandler cH = new CommandHandler(this);
     	getCommand("meb").setExecutor(cH);
     	getCommand("bank").setExecutor(cH);
-    	
-    	//Start interest task
-    	if (getConfigurationHandler().getString("general.interest.enabled") == "true") {
-    		interestTask();
-    		log.info("Interest task started.");
-    	} else {
-    		log.info("Interest task is disabled.");
-    	}
     	enabled = true;
     	log.info("MysqlEconomyBank has been successfully loaded!");
 	}
@@ -177,33 +171,6 @@ public final class Money extends JavaPlugin {
           }
     }
     
-    //Interest task
-    public void interestTask() {
-    	int time = Integer.parseInt(getConfigurationHandler().getString("general.interest.interestTime"));
-    	
-    	Bukkit.getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-    		public void run() {
-    			List<Player> onlinePlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
-    			if (onlinePlayers.isEmpty() == false) {
-    				for (Player p : onlinePlayers) {            			
-            			//if (econ.get)
-            			Double intPercentage = Double.parseDouble(getConfigurationHandler().getString("general.interest.percentageAmount").replace("%", ""));
-            			Double balance = getMoneyDatabaseInterface().getBalance(p);
-            			
-            			if (balance < getConfigurationHandler().getInteger("general.maxBankLimitMoney")) {
-            				Double interest = (balance / 100) * intPercentage;
-                			
-                			getMoneyDatabaseInterface().setBalance(p, balance + interest);
-                			getConfigurationHandler().printMessage(p, "chatMessages.interest", interest.toString(), p, p.getName());
-            			}            			
-        			}
-        			
-        			onlinePlayers.clear();
-    			}
-    		}
-    	}, time * 1200L, time * 1200L);
-    }
-    
   //Getter for Database Interfaces
     public AccountDatabaseInterface<Double> getMoneyDatabaseInterface() {
     	return moneyDatabaseInterface;
@@ -231,6 +198,12 @@ public final class Money extends JavaPlugin {
     }
     public WithdrawCmd getWithdrawCmd() {
     	return wCmd;
+    }
+    public InterestHandler getInterestHandler() {
+    	return iH;
+    }
+    public InterestCmd getInterestCmd() {
+    	return iCmd;
     }
 
 }

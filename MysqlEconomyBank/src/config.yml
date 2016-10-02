@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.7.0
+# config version 1.8.0
 
 database:
     #Type of database, Options: FlatFile or MySQL
@@ -62,6 +62,8 @@ chatMessages:
     setCommandFail: '&bThe amount must be a number!'
     setCommand: '&7%player2 &bbalance set to: &7$%amount'
     interest: '&bInterest credited: &7$%amount'
+    interestCommand: '&bNext interest in:&7 %time'
+    interestDisabled: '&cInterest feature is disabled!'
     
 #Action Bar Messages - Requires TitleManager optional dependency.
 actionBarMessages:

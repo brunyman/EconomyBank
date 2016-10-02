@@ -42,12 +42,30 @@ public class ConfigHandler {
 		}
 	}
 	
+	public String getStringWithColor(String key) {
+		if (!money.getConfig().contains(key)) {
+			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
+			return "errorCouldNotLocateInConfigYml:"+key;
+		} else {
+			return money.getConfig().getString(key).replaceAll("&", "§");
+		}
+	}
+	
 	public Integer getInteger(String key) {
 		if (!money.getConfig().contains(key)) {
 			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
 			return 0;
 		} else {
 			return money.getConfig().getInt(key);
+		}
+	}
+	
+	public Boolean getBoolean(String key) {
+		if (!money.getConfig().contains(key)) {
+			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
+			return false;
+		} else {
+			return money.getConfig().getBoolean(key);
 		}
 	}
 	

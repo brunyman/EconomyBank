@@ -41,6 +41,8 @@ public class CommandHandler implements CommandExecutor {
 					}
 				} if (args[0].equalsIgnoreCase("balance")) {
 					money.getBalanceCmd().runUserCmd(sender);
+				} if (args[0].equalsIgnoreCase("interest")) {
+					money.getInterestCmd().runUserCmd(sender);
 				} else {
 					if (sender instanceof Player) {
 						p = (Player) sender;
