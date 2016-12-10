@@ -13,8 +13,6 @@ import net.craftersland.money.Money;
 public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	private Money money;
-	private Connection conn;
-	private String tableName = "meb_accounts";
 	
 	public MoneyMysqlInterface(Money money) {
 		this.money = money;
@@ -22,13 +20,11 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public boolean hasAccount(Player player) {
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		      try {
-		    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-		 
-		        String sql = "SELECT `player_uuid` FROM `" + tableName + "` WHERE `player_uuid` = ? LIMIT 1";
+		      try {		 
+		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
 		        
@@ -55,13 +51,11 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public boolean hasAccount(UUID playerUUID) {
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		      try {
-		    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-		 
-		        String sql = "SELECT `player_uuid` FROM `" + tableName + "` WHERE `player_uuid` = ? LIMIT 1";
+		      try {		 
+		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        preparedUpdateStatement.setString(1, playerUUID.toString());
 		        
@@ -88,12 +82,10 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public boolean createAccount(Player player) {
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedStatement = null;
-		try {
-			tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-			 
-	        String sql = "INSERT INTO `" + tableName + "`(`player_uuid`, `player_name`, `money`, `last_seen`, `sync_complete`) " + "VALUES(?, ?, ?, ?, ?)";
+		try {			 
+	        String sql = "INSERT INTO `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "`(`player_uuid`, `player_name`, `money`, `last_seen`, `sync_complete`) " + "VALUES(?, ?, ?, ?, ?)";
 	        preparedStatement = conn.prepareStatement(sql);
 	        
 	        preparedStatement.setString(1, player.getUniqueId().toString());
@@ -123,13 +115,11 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-	      try {
-	    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-	 
-	        String sql = "SELECT `money` FROM `" + tableName + "` WHERE `player_uuid` = ? LIMIT 1";
+	      try {	 
+	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 	        
 	        preparedUpdateStatement = conn.prepareStatement(sql);
 	        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
@@ -157,13 +147,11 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public Double getBalance(UUID playerUUID) {
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-	      try {
-	    	  tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-	 
-	        String sql = "SELECT `money` FROM `" + tableName + "` WHERE `player_uuid` = ? LIMIT 1";
+	      try {	 
+	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 	        
 	        preparedUpdateStatement = conn.prepareStatement(sql);
 	        preparedUpdateStatement.setString(1, playerUUID.toString());
@@ -194,12 +182,10 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		if (!hasAccount(player)) {
 			createAccount(player);
 		}
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
-        try {
-            tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-        	
-			String updateSql = "UPDATE `" + tableName + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
+        try {        	
+			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
 			preparedUpdateStatement = conn.prepareStatement(updateSql);
 			preparedUpdateStatement.setDouble(1, amount);
 			preparedUpdateStatement.setString(2, player.getUniqueId().toString());
@@ -222,12 +208,10 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
 	@Override
 	public boolean setBalance(UUID playerUUID, Double amount) {
-		conn = money.getDatabaseManagerInterface().getConnection();
+		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
-        try {
-            tableName = money.getConfigurationHandler().getString("database.mysql.tableName");
-        	
-			String updateSql = "UPDATE `" + tableName + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
+        try {        	
+			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
 			preparedUpdateStatement = conn.prepareStatement(updateSql);
 			preparedUpdateStatement.setDouble(1, amount);
 			preparedUpdateStatement.setString(2, playerUUID.toString());

@@ -68,11 +68,6 @@ public final class Money extends JavaPlugin {
         } else {
         	log.info("Successfully hooked into TitleManager!");
         }
-        
-      //Create MysqlEconomyBridge folder
-        if (!new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank").exists()) {
-    	(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank")).mkdir();
-        }
     	
     	//Load Configuration
         cH = new ConfigHandler(this);
@@ -83,12 +78,6 @@ public final class Money extends JavaPlugin {
         	log.info("Using MySQL as Datasource...");
         	databaseManager = new DatabaseManagerMysql(this);
         	moneyDatabaseInterface = new MoneyMysqlInterface(this);
-        	//If mysql connection fails disable plugin
-        	if (databaseManager.getConnection() == null)
-        	{
-        		getServer().getPluginManager().disablePlugin(this);
-                return;
-        	}
         } else {
         	//Go for FlatFile
         	if (!new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"Accounts").exists()) {
@@ -136,8 +125,6 @@ public final class Money extends JavaPlugin {
 	    if (version.matches("1.7.10") || version.matches("1.7.9") || version.matches("1.7.5") || version.matches("1.7.2") || version.matches("1.8.8") || version.matches("1.8.7") || version.matches("1.8.3") || version.matches("1.8.4") || version.matches("1.8")) {
 	    	is19Server = false;
 	    	return true;
-	    } else {
-	    	log.warning("Possible incompatible server version detected: " + version + " .Attempting to run in 1.9 and 1.10 compatibility mode! If you have errors report them.");
 	    }
 	    return false;
 	}

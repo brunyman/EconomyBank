@@ -17,44 +17,63 @@ public class ConfigHandler {
 	//Config Generation and load
 	public ConfigHandler(Money money) {
 		this.money = money;
-		if (!(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"config.yml").exists())) {
-			Money.log.info("No config file found! Creating new one...");
-			money.saveDefaultConfig();
+		loadConfig();
+	}
+	
+	public void loadConfig() {
+		//Create MysqlPlayerDataBridge folder
+		File pluginFolder = new File("plugins" + System.getProperty("file.separator") + money.pluginName);
+		if (pluginFolder.exists() == false) {
+    		pluginFolder.mkdir();
+    	}
+		
+		File configFile = new File("plugins" + System.getProperty("file.separator") + money.pluginName + System.getProperty("file.separator") + "config.yml");
+		if (configFile.exists() == false) {
+    		Money.log.info("No config file found! Creating new one...");
+    		money.saveDefaultConfig();
 		}
-		try {
-			money.getConfig().load(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"config.yml"));
-		} catch (Exception e) {
-			Money.log.info("Could not load config file!");
+    	
+    	try {
+    		Money.log.info("Loading the config file...");
+    		money.getConfig().load(configFile);
+    	} catch (Exception e) {
+    		Money.log.severe("Could not load the config file! You need to regenerate the config! Error: " + e.getMessage());
 			e.printStackTrace();
-		}
+    	}
 	}
 	
 	//Get config contents by strings
 	public String getString(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
-			return "errorCouldNotLocateInConfigYml:"+key;
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			return "errorCouldNotLocateInConfigYml:" + key;
 		} else {
-			if (key.toLowerCase().contains("color")) {
-				return "§"+money.getConfig().getString(key);
-			}
 			return money.getConfig().getString(key);
 		}
 	}
 	
 	public String getStringWithColor(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
-			return "errorCouldNotLocateInConfigYml:"+key;
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			return "errorCouldNotLocateInConfigYml:" + key;
 		} else {
 			return money.getConfig().getString(key).replaceAll("&", "§");
 		}
 	}
 	
+	public List<String> getStringList(String key) {
+		if (!money.getConfig().contains(key)) {
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			return null;
+		} else {
+			return money.getConfig().getStringList(key);
+		}
+	}
+	
 	public Integer getInteger(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
-			return 0;
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			return null;
 		} else {
 			return money.getConfig().getInt(key);
 		}
@@ -62,8 +81,8 @@ public class ConfigHandler {
 	
 	public Boolean getBoolean(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate '"+key+"' in the config.yml inside of the MysqlEconomyBank folder! (Try generating a new one by deleting the current)");
-			return false;
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			return null;
 		} else {
 			return money.getConfig().getBoolean(key);
 		}
