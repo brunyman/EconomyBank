@@ -199,7 +199,7 @@ public class PlayerListener implements Listener{
 						p.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ">> " + ChatColor.RED + "Line 3 and 4 must be empty for balance signs.");
 						return;
 					}
-					event.setLine(0, money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
+					event.setLine(0, "§" + money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
 					event.setLine(1, money.getConfigurationHandler().getString("signFormat.balance"));
 					event.setLine(2, "");
 					event.setLine(3, "");
@@ -239,7 +239,7 @@ public class PlayerListener implements Listener{
 							DecimalFormat format2 = new DecimalFormat("#0.00");
 							event.setLine(2, format2.format(numberProcessing));
 						}
-						event.setLine(0, money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
+						event.setLine(0, "§" + money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
 						event.setLine(1, money.getConfigurationHandler().getString("signFormat.deposit"));
 						event.setLine(3, "");
 						money.getConfigurationHandler().printMessage(p, "chatMessages.createdSignSuccessfully", "0", p, p.getName());
@@ -281,7 +281,7 @@ public class PlayerListener implements Listener{
 							DecimalFormat format2 = new DecimalFormat("#0.00");
 							event.setLine(2, format2.format(numberProcessing));
 						}
-						event.setLine(0, money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
+						event.setLine(0, "§" + money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]");
 						event.setLine(1, money.getConfigurationHandler().getString("signFormat.withdraw"));
 						event.setLine(2, event.getLine(2));
 						event.setLine(3, "");
