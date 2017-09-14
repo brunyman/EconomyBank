@@ -1,6 +1,7 @@
 package net.craftersland.money.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -66,20 +67,46 @@ public class WithdrawCmd {
 		return true;
 	}
 	
-	public boolean runAdminCmd(CommandSender sender) {
-		if (sender instanceof Player) {
-			Player p = (Player) sender;
-			if (p.hasPermission("MysqlEconomyBank.admin")) {
-				//TODO
-			} else {
-				m.getSoundHandler().sendPlingSound(p);
-				m.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p, p.getName());
-				return true;
-			}
-		} else {
-			//TODO
-		}
-		return true;
-	}
+	public boolean runAdminCmd(CommandSender sender, String[] args) {
+	    if (sender instanceof Player) {
+	      Player p = (Player) sender;
+	      if (p.hasPermission("MysqlEconomyBank.admin")) {
+	        Player target = Bukkit.getPlayer(args[2]);
+	        Double amount = Double.parseDouble(args[1]);
+	        if (target != null) {
+	          double balance = m.getMoneyDatabaseInterface().getBalance(target);
+	          if (balance >= amount.doubleValue()) {
+	            m.getMoneyDatabaseInterface().setBalance(target, balance - amount);
+	            m.getSoundHandler().sendLevelUpSound(p);
+	            m.getConfigurationHandler().printMessage(p, "chatMessages.withdrewSuccessfully", amount.toString(), p, p.getName());
+	          } else {
+	            m.getSoundHandler().sendPlingSound(p);
+	            m.getConfigurationHandler().printMessage(p, "chatMessages.notEnoughMoneyInAccount", amount.toString(), p, p.getName());
+	          }
+	        } else {
+	          p.sendMessage(ChatColor.RED + "Not implemented for offline players!");
+	        }
+	      } else {
+	        m.getSoundHandler().sendPlingSound(p);
+	        m.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p, p.getName());
+	        return true;
+	      }
+	    } else {
+	      Player target = Bukkit.getPlayer(args[2]);
+	      Double amount = Double.parseDouble(args[1]);
+	      if (target != null) {
+	        double balance = m.getMoneyDatabaseInterface().getBalance(target);
+	        if (balance >= amount) {
+	          m.getMoneyDatabaseInterface().setBalance(target, balance - amount);
+	          sender.sendMessage(m.getConfigurationHandler().getString("chatMessages.withdrewSuccessfully").replace("%amount", amount.toString()));
+	        } else {
+	          sender.sendMessage(m.getConfigurationHandler().getString("chatMessages.notEnoughMoneyInAccount").replace("%amount", amount.toString()));
+	        }
+	      } else {
+	        sender.sendMessage(ChatColor.RED + "Not implemented for offline players!");
+	      }
+	    }
+	    return true;
+	  }
 
 }

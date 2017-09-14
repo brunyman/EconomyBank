@@ -39,9 +39,9 @@ public class CommandHandler implements CommandExecutor {
 						sendConsoleHelp(sender);
 						return false;
 					}
-				} if (args[0].equalsIgnoreCase("balance")) {
+				} else if (args[0].equalsIgnoreCase("balance")) {
 					money.getBalanceCmd().runUserCmd(sender);
-				} if (args[0].equalsIgnoreCase("interest")) {
+				} else if (args[0].equalsIgnoreCase("interest")) {
 					money.getInterestCmd().runUserCmd(sender);
 				} else {
 					if (sender instanceof Player) {
@@ -76,7 +76,7 @@ public class CommandHandler implements CommandExecutor {
 				} else if (args[0].equalsIgnoreCase("deposit")) {
 					money.getDepositCmd().runAdminCmd(sender, args);
 				} else if (args[0].equalsIgnoreCase("withdraw")) {
-					money.getWithdrawCmd().runAdminCmd(sender);
+					money.getWithdrawCmd().runAdminCmd(sender, args);
 				} else {
 					if (sender instanceof Player) {
 						p = (Player) sender;

@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.9.1
+# config version 1.10.0
 
 database:
     #Type of database, Options: FlatFile or MySQL
@@ -47,10 +47,10 @@ chatMessages:
     balance: '&b%player2:&7 $%balance'
     depositedSuccessfully: '&bDeposited &7$%amount &bsuccessfully!'
     reachedMaximumMoneyInAccount: '&bReached Bank Account limit!'
-    notEnoughMoneyInPoket: '&bYou dont have &7$%amount &bpocket!'
+    notEnoughMoneyInPoket: '&bYou dont have &7$%amount &bin your pocket!'
     withdrewSuccessfully: '&bWithdrew &7$%amount &bsuccessfully!'
     reachedMaximumMoneyInPocket: '&bReached Limit of money in your pocket.'
-    notEnoughMoneyInAccount: '&bYou dont have &7$%amount &bin your bank account.'
+    notEnoughMoneyInAccount: '&bNot enough funds in the bank account! Balance:&7$%amount'
     accountDoesNotExist: '&7%player2 &bdoes not have an account!'
     tooFastInteraction: '&bYou cant interact with MysqlEconomyBank this often. Please wait for a moment...'
     denyIfSneaking: '&bYou cant use the Bank signs if you are sneaking.'

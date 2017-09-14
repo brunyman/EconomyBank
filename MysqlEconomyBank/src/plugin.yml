@@ -1,6 +1,6 @@
 name: MysqlEconomyBank
 main: net.craftersland.money.Money
-version: 1.9.1
+version: 1.10.0
 website: www.craftersland.net
 load: STARTUP
 depend: [Vault]
@@ -19,13 +19,13 @@ permissions:
         description: Allows creating and removing MysqlEconomyBank signs.
         default: op
     MysqlEconomyBank.cmd.balance:
-        description: Check bank balance via command (Not implemented)
+        description: Check bank balance via command
         default: op
     MysqlEconomyBank.cmd.deposit:
-        description: Deposit money to your bank via command (Not implemented)
+        description: Deposit money to your bank via command
         default: op
     MysqlEconomyBank.cmd.withdraw:
-        description: Withdraw money to your bank via command (Not implemented)
+        description: Withdraw money to your bank via command
         default: op
     MysqlEconomyBank.cmd.interest:
         description: Check remaining time until next interest.
