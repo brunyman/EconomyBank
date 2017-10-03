@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.10.0
+# config version 1.10.1
 
 database:
     #Type of database, Options: FlatFile or MySQL
@@ -12,6 +12,7 @@ database:
         tableName: 'meb_accounts'
         user: 'admin'
         password: 'cheesecake'
+        ssl: false
 
 #General settings
 general: 

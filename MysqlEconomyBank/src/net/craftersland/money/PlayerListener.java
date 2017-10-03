@@ -73,6 +73,17 @@ public class PlayerListener implements Listener{
 						    				money.getConfigurationHandler().printMessage(p, "chatMessages.tooFastInteraction", "0", p, p.getName());
 						    				money.getSoundHandler().sendPlingSound(p);
 						    				return;
+						    			} else {
+						    				//add player to cooldown
+						    				money.cooldown.add(p.getUniqueId());
+											Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
+											int delay = delayCalc.intValue();
+											Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
+				                                public void run() {
+				                                	//remove player from cooldown
+				                                	money.cooldown.remove(p.getUniqueId());
+				                                }
+											}, delay);
 						    			}
 										money.getMoneyDatabaseInterface().getBalance(p);
 										money.getConfigurationHandler().printMessage(p, "chatMessages.balance", "0", p, p.getName());
@@ -81,16 +92,6 @@ public class PlayerListener implements Listener{
 					    				if (money.setupTitleManager() == true) {
 					    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balance");
 					    				}
-										//add player to cooldown
-					    				money.cooldown.add(p.getUniqueId());
-										Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
-										int delay = delayCalc.intValue();
-										Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
-			                                public void run() {
-			                                	//remove player from cooldown
-			                                	money.cooldown.remove(p.getUniqueId());
-			                                }
-			                        }, delay);
 										return;
 									}
 						    		//Deposit Signs
@@ -100,6 +101,17 @@ public class PlayerListener implements Listener{
 						    				money.getConfigurationHandler().printMessage(p, "chatMessages.tooFastInteraction", "0", p, p.getName());
 						    				money.getSoundHandler().sendPlingSound(p);
 						    				return;
+						    			} else {
+						    				//add player to cooldown
+						    				money.cooldown.add(p.getUniqueId());
+											Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
+											int delay = delayCalc.intValue();
+											Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
+				                                public void run() {
+				                                	//remove player from cooldown
+				                                	money.cooldown.remove(p.getUniqueId());
+				                                }
+											}, delay);
 						    			}
 						    			Double amount = Double.parseDouble(sign.getLine(2));
 						    			if (Money.econ.getBalance(p) >= amount) {
@@ -117,16 +129,6 @@ public class PlayerListener implements Listener{
 						    				if (money.setupTitleManager() == true) {
 						    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
 						    				}
-						    				//add player to cooldown
-						    				money.cooldown.add(p.getUniqueId());
-											Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
-											int delay = delayCalc.intValue();
-											Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
-				                                public void run() {
-				                                	//remove player from cooldown
-				                                        money.cooldown.remove(p.getUniqueId());
-				                                }
-				                        }, delay);
 						    				return;
 						    			}
 						    			money.getConfigurationHandler().printMessage(p, "chatMessages.notEnoughMoneyInPoket", amount + "", p, p.getName());
@@ -140,6 +142,17 @@ public class PlayerListener implements Listener{
 						    				money.getConfigurationHandler().printMessage(p, "chatMessages.tooFastInteraction", "0", p, p.getName());
 						    				money.getSoundHandler().sendPlingSound(p);
 						    				return;
+						    			} else {
+						    				//add player to cooldown
+						    				money.cooldown.add(p.getUniqueId());
+											Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
+											int delay = delayCalc.intValue();
+											Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
+				                                public void run() {
+				                                	//remove player from cooldown
+				                                	money.cooldown.remove(p.getUniqueId());
+				                                }
+											}, delay);
 						    			}
 						    			Double bankBalance = money.getMoneyDatabaseInterface().getBalance(p);
 						    			Double amount = Double.parseDouble(sign.getLine(2));
@@ -157,16 +170,6 @@ public class PlayerListener implements Listener{
 						    				if (money.setupTitleManager() == true) {
 						    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
 						    				}
-						    				//add player to cooldown
-						    				money.cooldown.add(p.getUniqueId());
-											Double delayCalc = 20.00 / 1000.00 * Double.parseDouble(money.getConfigurationHandler().getString("general.timeBetweenTwoInteractions"));
-											int delay = delayCalc.intValue();
-											Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(money, new Runnable() {
-				                                public void run() {
-				                                	//remove player from cooldown
-				                                	money.cooldown.remove(p.getUniqueId());
-				                                }
-				                        }, delay);
 						    				return;
 						    			}
 						    			money.getConfigurationHandler().printMessage(p, "chatMessages.notEnoughMoneyInAccount", amount + "", p, p.getName());

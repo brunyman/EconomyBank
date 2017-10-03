@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import net.craftersland.money.Money;
 
@@ -26,9 +27,15 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 		try {
        	 	//Load Drivers
             Class.forName("com.mysql.jdbc.Driver");
-            
+            Properties properties = new Properties();
+            properties.setProperty("user", money.getConfigurationHandler().getString("database.mysql.user"));
+            properties.setProperty("password", money.getConfigurationHandler().getString("database.mysql.password"));
+            properties.setProperty("autoReconnect", "true");
+            properties.setProperty("verifyServerCertificate", "false");
+            properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
+            properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
             //Connect to database
-            conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName") + "?" + "user=" + money.getConfigurationHandler().getString("database.mysql.user") + "&" + "password=" + money.getConfigurationHandler().getString("database.mysql.password"));
+            conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
            
           } catch (ClassNotFoundException e) {
         	  Money.log.severe("Could not locate drivers for mysql! Error: " + e.getMessage());
@@ -103,7 +110,14 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 		    start = System.currentTimeMillis();
 		    Money.log.info("Attempting to establish a connection to the MySQL server!");
 		    Class.forName("com.mysql.jdbc.Driver");
-		    conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName") + "?" + "user=" + money.getConfigurationHandler().getString("database.mysql.user") + "&" + "password=" + money.getConfigurationHandler().getString("database.mysql.password"));
+		    Properties properties = new Properties();
+            properties.setProperty("user", money.getConfigurationHandler().getString("database.mysql.user"));
+            properties.setProperty("password", money.getConfigurationHandler().getString("database.mysql.password"));
+            properties.setProperty("autoReconnect", "true");
+            properties.setProperty("verifyServerCertificate", "false");
+            properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
+            properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
+		    conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
 		    end = System.currentTimeMillis();
 		    Money.log.info("Connection to MySQL server established!");
 		    Money.log.info("Connection took " + ((end - start)) + "ms!");

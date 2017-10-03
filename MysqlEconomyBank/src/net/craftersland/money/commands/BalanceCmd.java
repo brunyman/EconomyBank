@@ -67,7 +67,7 @@ public class BalanceCmd {
 							return false;
 						}
 						String amount = money.getMoneyDatabaseInterface().getBalance(target).toString();
-						money.getConfigurationHandler().printMessage(target, "chatMessages.balanceCommand", amount, target, target.getName());
+						money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.balanceCommand", amount, target, target.getName());
 						money.getSoundHandler().sendClickSound(p);
 						return true;
 					    }
