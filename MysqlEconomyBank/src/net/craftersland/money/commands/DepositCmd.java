@@ -22,6 +22,7 @@ public class DepositCmd {
           m.getSoundHandler().sendPlingSound(p);
           return true;
         }
+        try {
         Double amount = Double.valueOf(Double.parseDouble(args[1]));
         if (Money.econ.getBalance(p) >= amount.doubleValue()) {
           Double bankBalance = m.getMoneyDatabaseInterface().getBalance(p);
@@ -48,6 +49,10 @@ public class DepositCmd {
         } else {
           m.getConfigurationHandler().printMessage(p, "chatMessages.notEnoughMoneyInPoket", "0", p, p.getName());
           m.getSoundHandler().sendPlingSound(p);
+        }
+        } catch (Exception e) {		
+        	sender.sendMessage(ChatColor.RED +  ">> Quantity must be a number!");		
+        	return false;		
         }
       } else {
         m.getSoundHandler().sendPlingSound(p);

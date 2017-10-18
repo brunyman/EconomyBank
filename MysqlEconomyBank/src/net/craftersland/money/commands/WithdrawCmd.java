@@ -25,6 +25,7 @@ public class WithdrawCmd {
     				m.getSoundHandler().sendPlingSound(p);
     				return true;
     			}
+    	        try {
     			Double bankBalance = m.getMoneyDatabaseInterface().getBalance(p);
     			Double amount = Double.parseDouble(args[1]);
     			if (bankBalance >= amount) {
@@ -56,6 +57,10 @@ public class WithdrawCmd {
     			m.getConfigurationHandler().printMessage(p, "chatMessages.notEnoughMoneyInAccount", amount + "", p, p.getName());
     			m.getSoundHandler().sendPlingSound(p);
     			return true;
+    	        } catch (Exception e) {		
+    	        	sender.sendMessage(ChatColor.RED +  ">> Quantity must be a number!");		
+    	        	return false;		
+    	        }
 			} else {
 				m.getSoundHandler().sendPlingSound(p);
 				m.getConfigurationHandler().printMessage(p, "chatMessages.noPermission", "0", p, p.getName());

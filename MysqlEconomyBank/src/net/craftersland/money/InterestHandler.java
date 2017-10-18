@@ -76,10 +76,29 @@ public class InterestHandler {
                 			Double balance = pl.getMoneyDatabaseInterface().getBalance(p);
                 			
                 			if (balance < pl.getConfigurationHandler().getInteger("general.maxBankLimitMoney")) {
+                				
                 				Double interest = (balance / 100) * intPercentage;
-                    			
-                    			pl.getMoneyDatabaseInterface().setBalance(p, balance + interest);
-                    			pl.getConfigurationHandler().printMessage(p, "chatMessages.interest", interest.toString(), p, p.getName());
+                				
+						//If balance + interest is greater than the bank limit
+                				if ((balance+interest) > pl.getConfigurationHandler().getInteger("general.maxBankLimitMoney")) {
+                					
+							//Convert String to double
+                					Double maxbankmoney =  Double.parseDouble(pl.getConfigurationHandler().getString("general.maxBankLimitMoney"));
+                					
+                					//Set money of user to maxbankmoney (since you can not have more money in the bank)
+                					pl.getMoneyDatabaseInterface().setBalance(p, maxbankmoney);
+							
+							//Show interestmax message
+                        				pl.getConfigurationHandler().printMessage(p, "chatMessages.interestmax", "0", p, p.getName());
+                				
+						//If not, the interest is normally given
+                				} else {
+            						
+                        				pl.getMoneyDatabaseInterface().setBalance(p, balance + interest);
+                        				pl.getConfigurationHandler().printMessage(p, "chatMessages.interest", interest.toString(), p, p.getName());
+                				
+						}
+                				
                 			}            			
             			}
             			onlinePlayers.clear();

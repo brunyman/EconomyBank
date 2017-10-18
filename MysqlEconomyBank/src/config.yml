@@ -65,6 +65,7 @@ chatMessages:
     interest: '&bInterest credited: &7$%amount'
     interestCommand: '&bNext interest in:&7 %time'
     interestDisabled: '&cInterest feature is disabled!'
+    interestmax: '&cYou have reached the maximum amount of money in your bank'
     
 #Action Bar Messages - Requires TitleManager optional dependency.
 actionBarMessages:
