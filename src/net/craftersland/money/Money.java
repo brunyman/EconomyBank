@@ -33,6 +33,7 @@ public final class Money extends JavaPlugin {
 	public static Economy econ = null;
 	public static Permission perms = null;
 	public boolean is19Server = true;
+	public boolean is13Server = false;
 	public String pluginName = "MysqlEconomyBank";
 	public Set<UUID> cooldown = new HashSet<UUID>();
 	
@@ -124,6 +125,11 @@ public final class Money extends JavaPlugin {
 	    
 	    if (version.matches("1.7.10") || version.matches("1.7.9") || version.matches("1.7.5") || version.matches("1.7.2") || version.matches("1.8.8") || version.matches("1.8.7") || version.matches("1.8.3") || version.matches("1.8.4") || version.matches("1.8")) {
 	    	is19Server = false;
+	    	is13Server = false;
+	    	return true;
+	    } else if (version.matches("1.13")) {
+	    	is19Server = true;
+	    	is13Server = true;
 	    	return true;
 	    }
 	    return false;

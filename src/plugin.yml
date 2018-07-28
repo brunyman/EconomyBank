@@ -1,11 +1,12 @@
 name: MysqlEconomyBank
 main: net.craftersland.money.Money
-version: 1.10.1
+version: 1.11.0
 website: www.craftersland.net
 load: STARTUP
 depend: [Vault]
 softdepend: [TitleManager]
 description: Sign Money Bank System.
+api-version: 1.13
 commands:
     meb:
         description: The main command.
