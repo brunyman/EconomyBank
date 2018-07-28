@@ -51,7 +51,7 @@ public class PlayerListener implements Listener{
 		final Player p = event.getPlayer();
 		
 		if (event.getClickedBlock() != null) {
-		    if (event.getClickedBlock().getType().equals(Material.WALL_SIGN) || money.is13Server == false && event.getClickedBlock().getType().equals(Material.valueOf("SIGN_POST")) || event.getClickedBlock().getType().equals(Material.SIGN) || event.getClickedBlock().getType().equals(Material.LEGACY_SIGN) || event.getClickedBlock().getType().equals(Material.LEGACY_SIGN_POST) || event.getClickedBlock().getType().equals(Material.LEGACY_WALL_SIGN)) {
+		    if (event.getClickedBlock().getType().equals(Material.WALL_SIGN) || money.is13Server == false && event.getClickedBlock().getType().equals(Material.valueOf("SIGN_POST")) || event.getClickedBlock().getType().equals(Material.SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN_POST) ||  money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_WALL_SIGN)) {
 		    	if (isEventSafe(event.getPlayer().getUniqueId()) == true) {
 		    		final Sign sign = (Sign) event.getClickedBlock().getState();
 			    	Bukkit.getScheduler().runTaskAsynchronously(money, new Runnable() {
@@ -315,7 +315,7 @@ public class PlayerListener implements Listener{
 		Player p = event.getPlayer();
 		Block testblock = event.getBlock();			
 			//if sign found
-			if (testblock.getType().equals(Material.WALL_SIGN) || money.is13Server == false && testblock.getType().equals(Material.valueOf("SIGN_POST")) || testblock.getType().equals(Material.SIGN) || testblock.getType().equals(Material.LEGACY_SIGN) || testblock.getType().equals(Material.LEGACY_SIGN_POST) || testblock.getType().equals(Material.LEGACY_WALL_SIGN)) {
+			if (testblock.getType().equals(Material.WALL_SIGN) || money.is13Server == false && testblock.getType().equals(Material.valueOf("SIGN_POST")) || testblock.getType().equals(Material.SIGN) || money.is13Server && testblock.getType().equals(Material.LEGACY_SIGN) || money.is13Server && testblock.getType().equals(Material.LEGACY_SIGN_POST) || money.is13Server && testblock.getType().equals(Material.LEGACY_WALL_SIGN)) {
 					//check the found sign for the players name.
 					Sign sign = (Sign) testblock.getState();
 					if (sign.getLine(0).contains(money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]")) {
