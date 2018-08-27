@@ -51,7 +51,7 @@ public class PlayerListener implements Listener{
 		final Player p = event.getPlayer();
 		
 		if (event.getClickedBlock() != null) {
-		    if (event.getClickedBlock().getType().equals(Material.WALL_SIGN) || money.is13Server == false && event.getClickedBlock().getType().equals(Material.valueOf("SIGN_POST")) || event.getClickedBlock().getType().equals(Material.SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN_POST) ||  money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_WALL_SIGN)) {
+		    if (event.getClickedBlock().getType().equals(Material.WALL_SIGN) || money.is13Server == false && event.getClickedBlock().getType().equals(Material.valueOf("SIGN_POST")) || money.is13Server == true && event.getClickedBlock().getType().equals(Material.SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN_POST) ||  money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_WALL_SIGN)) {
 		    	if (isEventSafe(event.getPlayer().getUniqueId()) == true) {
 		    		final Sign sign = (Sign) event.getClickedBlock().getState();
 			    	Bukkit.getScheduler().runTaskAsynchronously(money, new Runnable() {

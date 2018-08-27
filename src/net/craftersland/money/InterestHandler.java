@@ -65,8 +65,9 @@ public class InterestHandler {
 	//Interest task
     private void interestTask() {
     	if (pl.getConfigurationHandler().getBoolean("general.interest.enabled") == true) {
-    		Money.log.info("Interest task started.");
+    		Money.log.info("Interest task started. Iterest will be given every " + pl.getConfigurationHandler().getInteger("general.interest.interestTime") + " minutes.");
     		BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(pl, new Runnable() {
+    			
         		public void run() {
         			lastInterestTime = System.currentTimeMillis();
         			List<Player> onlinePlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
@@ -85,7 +86,8 @@ public class InterestHandler {
             			onlinePlayers.clear();
         			}
         		}
-        	}, 20L, pl.getConfigurationHandler().getInteger("general.interest.interestTime") * 60 * 20L);
+        		
+        	}, 20L, pl.getConfigurationHandler().getInteger("general.interest.interestTime") * (60 * 20L));
         	taskID = task.getTaskId();
     	} else {
     		Money.log.info("Interest task is disabled.");
