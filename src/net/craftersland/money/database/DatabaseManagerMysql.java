@@ -34,6 +34,10 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
             properties.setProperty("verifyServerCertificate", "false");
             properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
             properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
+            properties.setProperty("useUnicode", "true");
+            properties.setProperty("characterEncoding", "utf8");
+            properties.setProperty("characterSetResults", "utf8");
+            properties.setProperty("connectionCollation", "utf8mb4_unicode_ci");
             //Connect to database
             conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
            
@@ -51,7 +55,7 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 	public boolean setupDatabase() {
 		PreparedStatement query = null;
 	      try {	        
-	        String data = "CREATE TABLE IF NOT EXISTS `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` (id int(10) AUTO_INCREMENT, player_uuid varchar(50) NOT NULL UNIQUE, player_name varchar(50) NOT NULL, money double(30,2) NOT NULL, last_seen varchar(30) NOT NULL, sync_complete varchar(5) NOT NULL, PRIMARY KEY(id));";
+	        String data = "CREATE TABLE IF NOT EXISTS `" + money.getConfigurationHandler().getString("database.mysql.tableName") + "` (id int(10) AUTO_INCREMENT, player_uuid varchar(50) NOT NULL UNIQUE, player_name varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, money double(30,2) NOT NULL, last_seen varchar(30) NOT NULL, sync_complete varchar(5) NOT NULL, PRIMARY KEY(id));";
 	        query = conn.prepareStatement(data);
 	        query.execute();
 	      } catch (SQLException e) {
@@ -117,6 +121,10 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
             properties.setProperty("verifyServerCertificate", "false");
             properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
             properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
+            properties.setProperty("useUnicode", "true");
+            properties.setProperty("characterEncoding", "utf8");
+            properties.setProperty("characterSetResults", "utf8");
+            properties.setProperty("connectionCollation", "utf8mb4_unicode_ci");
 		    conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
 		    end = System.currentTimeMillis();
 		    Money.log.info("Connection to MySQL server established!");
