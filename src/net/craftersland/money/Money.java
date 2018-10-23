@@ -127,7 +127,7 @@ public final class Money extends JavaPlugin {
 	    	is19Server = false;
 	    	is13Server = false;
 	    	return true;
-	    } else if (version.matches("1.13") || version.matches("1.13.1")) {
+	    } else if (version.matches("1.13") || version.matches("1.13.1") || version.matches("1.13.2")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	return true;
