@@ -26,7 +26,7 @@ public class WithdrawCmd {
     				return true;
     			}
     			Double bankBalance = m.getMoneyDatabaseInterface().getBalance(p);
-    			Double amount = Double.parseDouble(args[1]);
+    			final Double amount = Double.parseDouble(args[1]);
     			if (bankBalance >= amount) {
     				if (Money.econ.getBalance(p) + amount > Double.parseDouble(m.getConfigurationHandler().getString("general.maxPocketLimitMoney"))) {
     					m.getConfigurationHandler().printMessage(p, "chatMessages.reachedMaximumMoneyInPocket", amount + "", p, p.getName());
@@ -34,11 +34,18 @@ public class WithdrawCmd {
     					return true;
     				}
     				m.getMoneyDatabaseInterface().setBalance(p, bankBalance - amount);
-    				Money.econ.depositPlayer(p, amount);
+    				Bukkit.getScheduler().runTask(m, new Runnable() {
+
+						@Override
+						public void run() {
+							Money.econ.depositPlayer(p, amount);
+						}
+    					
+    				});
     				m.getConfigurationHandler().printMessage(p, "chatMessages.withdrewSuccessfully", amount + "", p, p.getName());
     				m.getSoundHandler().sendClickSound(p);
     				//Send Action Bar message. Requires TitleManager
-    				if (m.setupTitleManager() == true) {
+    				if (m.is19Server || m.setupTitleManager() == true) {
     					m.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
     				}
     				//add player to cooldown

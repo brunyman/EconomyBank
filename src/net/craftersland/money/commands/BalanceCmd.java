@@ -31,7 +31,7 @@ public class BalanceCmd {
 				money.getConfigurationHandler().printMessage(p, "chatMessages.balance", "0", p, p.getName());
 				money.getSoundHandler().sendClickSound(p);
 				//Send Action Bar message. Requires TitleManager
-				if (money.setupTitleManager() == true) {
+				if (money.is19Server || money.setupTitleManager() == true) {
 					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balance");
 				}
 				//add player to cooldown

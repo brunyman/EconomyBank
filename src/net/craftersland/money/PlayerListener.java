@@ -46,12 +46,35 @@ public class PlayerListener implements Listener{
 		return true;
 	}
 	
+	private boolean isSign(Material sourceMaterial) {
+		//Pre-1.14 API
+		if (money.is14Server == false && sourceMaterial.equals(Material.valueOf("WALL_SIGN")) || money.is13Server == false && sourceMaterial.equals(Material.valueOf("SIGN_POST")) || money.is13Server == true && money.is14Server == false && sourceMaterial.equals(Material.valueOf("SIGN"))) {
+			return true;
+		} else if (money.is14Server) {
+			//After 1.14 API
+			if (sourceMaterial == Material.ACACIA_SIGN || sourceMaterial == Material.ACACIA_WALL_SIGN) {
+				return true;
+			} else if (sourceMaterial == Material.BIRCH_SIGN || sourceMaterial == Material.BIRCH_WALL_SIGN) {
+				return true;
+			} else if (sourceMaterial == Material.DARK_OAK_SIGN || sourceMaterial == Material.DARK_OAK_WALL_SIGN) {
+				return true;
+			} else if (sourceMaterial == Material.JUNGLE_SIGN || sourceMaterial == Material.JUNGLE_WALL_SIGN) {
+				return true;
+			} else if (sourceMaterial == Material.OAK_SIGN || sourceMaterial == Material.OAK_WALL_SIGN) {
+				return true;
+			} else if (sourceMaterial == Material.SPRUCE_SIGN || sourceMaterial == Material.SPRUCE_WALL_SIGN) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@EventHandler
 	public void onClick(final PlayerInteractEvent event) {
 		final Player p = event.getPlayer();
 		
 		if (event.getClickedBlock() != null) {
-		    if (event.getClickedBlock().getType().equals(Material.WALL_SIGN) || money.is13Server == false && event.getClickedBlock().getType().equals(Material.valueOf("SIGN_POST")) || money.is13Server == true && event.getClickedBlock().getType().equals(Material.SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN) || money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_SIGN_POST) ||  money.is13Server && event.getClickedBlock().getType().equals(Material.LEGACY_WALL_SIGN)) {
+		    if (isSign(event.getClickedBlock().getType())) {
 		    	if (isEventSafe(event.getPlayer().getUniqueId()) == true) {
 		    		final Sign sign = (Sign) event.getClickedBlock().getState();
 			    	Bukkit.getScheduler().runTaskAsynchronously(money, new Runnable() {
@@ -89,7 +112,7 @@ public class PlayerListener implements Listener{
 										money.getConfigurationHandler().printMessage(p, "chatMessages.balance", "0", p, p.getName());
 										money.getSoundHandler().sendClickSound(p);
 										//Send Action Bar message. Requires TitleManager
-					    				if (money.setupTitleManager() == true) {
+					    				if (money.is19Server || money.setupTitleManager() == true) {
 					    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balance");
 					    				}
 										return;
@@ -113,7 +136,7 @@ public class PlayerListener implements Listener{
 				                                }
 											}, delay);
 						    			}
-						    			Double amount = Double.parseDouble(sign.getLine(2));
+						    			final Double amount = Double.parseDouble(sign.getLine(2));
 						    			if (Money.econ.getBalance(p) >= amount) {
 						    				Double bankBalance = money.getMoneyDatabaseInterface().getBalance(p);
 						    				if (bankBalance + amount > Double.parseDouble(money.getConfigurationHandler().getString("general.maxBankLimitMoney"))) {
@@ -121,12 +144,19 @@ public class PlayerListener implements Listener{
 						    					money.getSoundHandler().sendPlingSound(p);
 						    					return;
 						    				}
-						    				Money.econ.withdrawPlayer(p, amount);
+						    				Bukkit.getScheduler().runTask(money, new Runnable() {
+
+												@Override
+												public void run() {
+													Money.econ.withdrawPlayer(p, amount);
+												}
+						    					
+						    				});
 						    				money.getMoneyDatabaseInterface().setBalance(p, bankBalance + amount);
 						    				money.getConfigurationHandler().printMessage(p, "chatMessages.depositedSuccessfully", amount + "", p, p.getName());
 						    				money.getSoundHandler().sendClickSound(p);
 						    				//Send Action Bar message. Requires TitleManager
-						    				if (money.setupTitleManager() == true) {
+						    				if (money.is19Server || money.setupTitleManager() == true) {
 						    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
 						    				}
 						    				return;
@@ -155,7 +185,7 @@ public class PlayerListener implements Listener{
 											}, delay);
 						    			}
 						    			Double bankBalance = money.getMoneyDatabaseInterface().getBalance(p);
-						    			Double amount = Double.parseDouble(sign.getLine(2));
+						    			final Double amount = Double.parseDouble(sign.getLine(2));
 						    			if (bankBalance >= amount) {
 						    				if (Money.econ.getBalance(p) + amount > Double.parseDouble(money.getConfigurationHandler().getString("general.maxPocketLimitMoney"))) {
 						    					money.getConfigurationHandler().printMessage(p, "chatMessages.reachedMaximumMoneyInPocket", amount + "", p, p.getName());
@@ -163,11 +193,18 @@ public class PlayerListener implements Listener{
 						    					return;
 						    				}
 						    				money.getMoneyDatabaseInterface().setBalance(p, bankBalance - amount);
-						    				Money.econ.depositPlayer(p, amount);
+						    				Bukkit.getScheduler().runTask(money, new Runnable() {
+
+												@Override
+												public void run() {
+													Money.econ.depositPlayer(p, amount);
+												}
+						    					
+						    				});
 						    				money.getConfigurationHandler().printMessage(p, "chatMessages.withdrewSuccessfully", amount + "", p, p.getName());
 						    				money.getSoundHandler().sendClickSound(p);
 						    				//Send Action Bar message. Requires TitleManager
-						    				if (money.setupTitleManager() == true) {
+						    				if (money.is19Server || money.setupTitleManager() == true) {
 						    					money.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
 						    				}
 						    				return;
@@ -315,7 +352,7 @@ public class PlayerListener implements Listener{
 		Player p = event.getPlayer();
 		Block testblock = event.getBlock();			
 			//if sign found
-			if (testblock.getType().equals(Material.WALL_SIGN) || money.is13Server == false && testblock.getType().equals(Material.valueOf("SIGN_POST")) || testblock.getType().equals(Material.SIGN) || money.is13Server && testblock.getType().equals(Material.LEGACY_SIGN) || money.is13Server && testblock.getType().equals(Material.LEGACY_SIGN_POST) || money.is13Server && testblock.getType().equals(Material.LEGACY_WALL_SIGN)) {
+			if (isSign(testblock.getType())) {
 					//check the found sign for the players name.
 					Sign sign = (Sign) testblock.getState();
 					if (sign.getLine(0).contains(money.getConfigurationHandler().getString("signFormat.signColor") + ChatColor.BOLD + "[Bank]")) {

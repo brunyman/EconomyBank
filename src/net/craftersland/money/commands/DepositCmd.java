@@ -22,7 +22,7 @@ public class DepositCmd {
           m.getSoundHandler().sendPlingSound(p);
           return true;
         }
-        Double amount = Double.valueOf(Double.parseDouble(args[1]));
+        final Double amount = Double.valueOf(Double.parseDouble(args[1]));
         if (Money.econ.getBalance(p) >= amount.doubleValue()) {
           Double bankBalance = m.getMoneyDatabaseInterface().getBalance(p);
           if (bankBalance.doubleValue() + amount.doubleValue() > Double.parseDouble(m.getConfigurationHandler().getString("general.maxBankLimitMoney"))) {
@@ -30,11 +30,18 @@ public class DepositCmd {
             m.getSoundHandler().sendPlingSound(p);
             return true;
           }
-          Money.econ.withdrawPlayer(p, amount.doubleValue());
+          Bukkit.getScheduler().runTask(m, new Runnable() {
+
+			@Override
+			public void run() {
+				Money.econ.withdrawPlayer(p, amount.doubleValue());
+			}
+        	  
+          });
           m.getMoneyDatabaseInterface().setBalance(p, bankBalance + amount);
           m.getConfigurationHandler().printMessage(p, "chatMessages.depositedSuccessfully", amount + "", p, p.getName());
           m.getSoundHandler().sendClickSound(p);
-          if (m.setupTitleManager()) {
+          if (m.is19Server || m.setupTitleManager()) {
             m.getConfigurationHandler().actionBarMessage(p, "actionBarMessages.balanceLeft");
           }
           m.cooldown.add(p.getUniqueId());

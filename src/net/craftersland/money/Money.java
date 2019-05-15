@@ -32,6 +32,7 @@ public final class Money extends JavaPlugin {
 	public static Logger log;
 	public static Economy econ = null;
 	public static Permission perms = null;
+	public boolean is14Server = true;
 	public boolean is19Server = true;
 	public boolean is13Server = false;
 	public String pluginName = "MysqlEconomyBank";
@@ -64,10 +65,12 @@ public final class Money extends JavaPlugin {
         setupPermissions();
         
         //Setup TitleManager optional dependency
-        if (setupTitleManager() == false) {
-        	log.warning("Failed to hook into TitleManager, disabling action bar messages.");
-        } else {
-        	log.info("Successfully hooked into TitleManager!");
+        if (is19Server == false) {
+        	if (setupTitleManager() == false) {
+            	log.warning("Failed to hook into TitleManager, disabling action bar messages.");
+            } else {
+            	log.info("Successfully hooked into TitleManager!");
+            }
         }
     	
     	//Load Configuration
@@ -126,10 +129,17 @@ public final class Money extends JavaPlugin {
 	    if (version.matches("1.7.10") || version.matches("1.7.9") || version.matches("1.7.5") || version.matches("1.7.2") || version.matches("1.8.8") || version.matches("1.8.7") || version.matches("1.8.3") || version.matches("1.8.4") || version.matches("1.8")) {
 	    	is19Server = false;
 	    	is13Server = false;
+	    	is14Server = false;
 	    	return true;
 	    } else if (version.matches("1.13") || version.matches("1.13.1") || version.matches("1.13.2")) {
 	    	is19Server = true;
 	    	is13Server = true;
+	    	is14Server = false;
+	    	return true;
+	    } else if (version.matches("1.14") || version.matches("1.14.1")) {
+	    	is19Server = true;
+	    	is13Server = true;
+	    	is14Server = true;
 	    	return true;
 	    }
 	    return false;

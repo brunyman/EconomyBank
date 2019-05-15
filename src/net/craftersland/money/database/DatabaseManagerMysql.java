@@ -34,10 +34,6 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
             properties.setProperty("verifyServerCertificate", "false");
             properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
             properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
-            properties.setProperty("useUnicode", "true");
-            properties.setProperty("characterEncoding", "utf8");
-            properties.setProperty("characterSetResults", "utf8");
-            properties.setProperty("connectionCollation", "utf8mb4_unicode_ci");
             //Connect to database
             conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
            
