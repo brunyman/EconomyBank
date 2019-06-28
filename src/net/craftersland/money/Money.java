@@ -136,11 +136,15 @@ public final class Money extends JavaPlugin {
 	    	is13Server = true;
 	    	is14Server = false;
 	    	return true;
-	    } else if (version.matches("1.14") || version.matches("1.14.1") || version.matches("1.14.2")) {
+	    } else if (version.matches("1.14") || version.matches("1.14.1") || version.matches("1.14.2") || version.matches("1.14.3")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = true;
 	    	return true;
+	    } else {
+	    	is19Server = true;
+	    	is13Server = true;
+	    	is14Server = true;
 	    }
 	    return false;
 	}

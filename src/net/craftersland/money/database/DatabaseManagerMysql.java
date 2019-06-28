@@ -111,16 +111,12 @@ public class DatabaseManagerMysql implements DatabaseManagerInterface{
 		    Money.log.info("Attempting to establish a connection to the MySQL server!");
 		    Class.forName("com.mysql.jdbc.Driver");
 		    Properties properties = new Properties();
-            properties.setProperty("user", money.getConfigurationHandler().getString("database.mysql.user"));
+		    properties.setProperty("user", money.getConfigurationHandler().getString("database.mysql.user"));
             properties.setProperty("password", money.getConfigurationHandler().getString("database.mysql.password"));
             properties.setProperty("autoReconnect", "true");
             properties.setProperty("verifyServerCertificate", "false");
             properties.setProperty("useSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
             properties.setProperty("requireSSL", money.getConfigurationHandler().getString("database.mysql.ssl"));
-            properties.setProperty("useUnicode", "true");
-            properties.setProperty("characterEncoding", "utf8");
-            properties.setProperty("characterSetResults", "utf8");
-            properties.setProperty("connectionCollation", "utf8mb4_unicode_ci");
 		    conn = DriverManager.getConnection("jdbc:mysql://" + money.getConfigurationHandler().getString("database.mysql.host") + ":" + money.getConfigurationHandler().getString("database.mysql.port") + "/" + money.getConfigurationHandler().getString("database.mysql.databaseName"), properties);
 		    end = System.currentTimeMillis();
 		    Money.log.info("Connection to MySQL server established!");
