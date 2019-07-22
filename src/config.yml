@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.13.2
+# config version 1.13.3
 
 database:
     #Type of database, Options: FlatFile or MySQL
