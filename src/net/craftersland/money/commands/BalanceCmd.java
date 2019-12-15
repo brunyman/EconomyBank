@@ -145,7 +145,7 @@ public class BalanceCmd {
 							sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
 							return true;
 						} else {
-							sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.RED + " does not have an account!");
+							//sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.RED + " does not have an account!");
 							return false;
 						}
 						//sender.sendMessage(ChatColor.RED +  ">> Player offline or wrong UUID!");

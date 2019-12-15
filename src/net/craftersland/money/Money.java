@@ -131,12 +131,37 @@ public final class Money extends JavaPlugin {
 	    	is13Server = false;
 	    	is14Server = false;
 	    	return true;
+	    } else if (version.matches("1.9") || version.matches("1.9.1") || version.matches("1.9.2") || version.matches("1.9.3") || version.matches("1.9.4")) {
+	    	is19Server = true;
+	    	is13Server = false;
+	    	is14Server = false;
+	    	return true;
+	    } else if (version.matches("1.10") || version.matches("1.10.1") || version.matches("1.10.2")) {
+	    	is19Server = true;
+	    	is13Server = false;
+	    	is14Server = false;
+	    	return true;
+	    } else if (version.matches("1.11") || version.matches("1.11.1") || version.matches("1.11.2")) {
+	    	is19Server = true;
+	    	is13Server = false;
+	    	is14Server = false;
+	    	return true;
+	    } else if (version.matches("1.12") || version.matches("1.12.1") || version.matches("1.12.2")) {
+	    	is19Server = true;
+	    	is13Server = false;
+	    	is14Server = false;
+	    	return true;
 	    } else if (version.matches("1.13") || version.matches("1.13.1") || version.matches("1.13.2")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = false;
 	    	return true;
 	    } else if (version.matches("1.14") || version.matches("1.14.1") || version.matches("1.14.2") || version.matches("1.14.3") || version.matches("1.14.4")) {
+	    	is19Server = true;
+	    	is13Server = true;
+	    	is14Server = true;
+	    	return true;
+	    } else if (version.matches("1.15")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = true;
