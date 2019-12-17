@@ -104,6 +104,12 @@ public final class Money extends JavaPlugin {
     	CommandHandler cH = new CommandHandler(this);
     	getCommand("meb").setExecutor(cH);
     	getCommand("bank").setExecutor(cH);
+    	//Activate placeholders using PlaceholdersAPI
+    	if (isPlaceHoldersAPIinstalled()) {
+    		new Placeholders(this).register();
+    		log.info("PlaceholdersAPI detected and placeholders activated!");
+    	}
+    	
     	enabled = true;
     	log.info("MysqlEconomyBank has been successfully loaded!");
 	}
@@ -196,6 +202,15 @@ public final class Money extends JavaPlugin {
     //Check if TitleManager is available
     public boolean setupTitleManager() {
     	if (getServer().getPluginManager().getPlugin("TitleManager") != null) {
+        	return true;
+        }
+          else {
+        	  return false;        	  
+          }
+    }
+    
+    public boolean isPlaceHoldersAPIinstalled() {
+    	if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
         	return true;
         }
           else {
