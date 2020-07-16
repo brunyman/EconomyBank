@@ -63,12 +63,12 @@ public class BalanceCmd {
 				if (target != null) {
 					if (target.isOnline()) {
 						if (money.getMoneyDatabaseInterface().hasAccount(target) == false) {
-							money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.accountDoesNotExist", "0", target, target.getName());
+							money.getConfigurationHandler().printMessage(p, "chatMessages.accountDoesNotExist", "0", target, target.getName());
 							money.getSoundHandler().sendPlingSound(p);
 							return false;
 						}
 						String amount = money.getMoneyDatabaseInterface().getBalance(target).toString();
-						money.getConfigurationHandler().printMessage(((Player) sender).getPlayer(), "chatMessages.balanceCommand", amount, target, target.getName());
+						money.getConfigurationHandler().printMessage(p, "chatMessages.balanceCommand", amount, target, target.getName());
 						money.getSoundHandler().sendClickSound(p);
 						return true;
 					    }
@@ -76,28 +76,28 @@ public class BalanceCmd {
 						try {
 							UUID targetUUID = UUID.fromString(args[1]);
 							if (money.getMoneyDatabaseInterface().hasAccount(targetUUID) == false) {
-								money.getConfigurationHandler().printMessage((Player) sender, "chatMessages.accountDoesNotExist", "0", null, "null");
+								money.getConfigurationHandler().printMessage(p, "chatMessages.accountDoesNotExist", "0", null, "null");
 								money.getSoundHandler().sendPlingSound(p);
 								return false;
 							}
 							String amount = money.getMoneyDatabaseInterface().getBalance(targetUUID).toString();
-							money.getConfigurationHandler().printMessage((Player) sender, "chatMessages.balanceCommand", amount, null, "null");
+							money.getConfigurationHandler().printMessage(p, "chatMessages.balanceCommand", amount, null, "null");
 							money.getSoundHandler().sendClickSound(p);
 							return true;
 						} catch (Exception e) {
 							OfflinePlayer offp = Bukkit.getOfflinePlayer(args[1]);
 							if (offp != null) {
 								if (money.getMoneyDatabaseInterface().hasAccount(offp.getUniqueId()) == false) {
-									money.getConfigurationHandler().printMessage((Player) sender, "chatMessages.accountDoesNotExist", "0", null, "null");
+									money.getConfigurationHandler().printMessage(p, "chatMessages.accountDoesNotExist", "0", null, "null");
 									money.getSoundHandler().sendPlingSound(p);
 									return false;
 								}
 								String amount = money.getMoneyDatabaseInterface().getBalance(offp.getUniqueId()).toString();
-								money.getConfigurationHandler().printMessage((Player) sender, "chatMessages.balanceCommand", amount, null, "null");
+								money.getConfigurationHandler().printMessage(p, "chatMessages.balanceCommand", amount, null, "null");
 								money.getSoundHandler().sendClickSound(p);
 								return true;
 							} else {
-								money.getConfigurationHandler().printMessage((Player) sender, "chatMessages.accountDoesNotExist", "0", null, "null");
+								money.getConfigurationHandler().printMessage(p, "chatMessages.accountDoesNotExist", "0", null, "null");
 								money.getSoundHandler().sendPlingSound(p);
 								return false;
 							}
@@ -113,7 +113,7 @@ public class BalanceCmd {
 				return false;
 			}
 		} else {
-			Player target = Bukkit.getPlayer(args[1]);
+			OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 			if (target != null) {
 				if (target.isOnline()) {
 					if (money.getMoneyDatabaseInterface().hasAccount(target) == false) {
@@ -123,7 +123,6 @@ public class BalanceCmd {
 					String amount = money.getMoneyDatabaseInterface().getBalance(target).toString();
 					sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
 					return true;
-				    }
 				} else {
 					try {
 						UUID targetUUID = UUID.fromString(args[1]);
@@ -135,23 +134,17 @@ public class BalanceCmd {
 						sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + targetUUID + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
 						return true;
 					} catch (Exception e) {
-						OfflinePlayer offp = Bukkit.getOfflinePlayer(args[1]);
-						if (offp != null) {
-							if (money.getMoneyDatabaseInterface().hasAccount(offp.getUniqueId()) == false) {
-								sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.RED + " does not have an account!");
-								return false;
-							}
-							String amount = money.getMoneyDatabaseInterface().getBalance(offp.getUniqueId()).toString();
-							sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
-							return true;
-						} else {
-							//sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + offp.getName() + ChatColor.RED + " does not have an account!");
+						if (money.getMoneyDatabaseInterface().hasAccount(target) == false) {
+							sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.RED + " does not have an account!");
 							return false;
 						}
-						//sender.sendMessage(ChatColor.RED +  ">> Player offline or wrong UUID!");
-						//return false;
+						String amount = money.getMoneyDatabaseInterface().getBalance(target).toString();
+						sender.sendMessage(ChatColor.GREEN +  ">> " + ChatColor.WHITE + "" + target.getName() + ChatColor.GREEN + " balance: " + ChatColor.WHITE + "" + amount);
+						return true;
 					}
-			}
+			   }
+			} 
+			sender.sendMessage(ChatColor.RED +  ">> " + ChatColor.WHITE + "" + args[1] + ChatColor.RED + " does not have an account!");
 		}
 		return true;
 	}

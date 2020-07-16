@@ -24,12 +24,12 @@ public class ConfigHandler {
 	
 	public void loadConfig() {
 		//Create MysqlPlayerDataBridge folder
-		File pluginFolder = new File("plugins" + System.getProperty("file.separator") + money.pluginName);
+		File pluginFolder = new File("plugins" + System.getProperty("file.separator") + Money.instance.getDescription().getName());
 		if (pluginFolder.exists() == false) {
     		pluginFolder.mkdir();
     	}
 		
-		File configFile = new File("plugins" + System.getProperty("file.separator") + money.pluginName + System.getProperty("file.separator") + "config.yml");
+		File configFile = new File("plugins" + System.getProperty("file.separator") + Money.instance.getDescription().getName() + System.getProperty("file.separator") + "config.yml");
 		if (configFile.exists() == false) {
     		Money.log.info("No config file found! Creating new one...");
     		money.saveDefaultConfig();
@@ -47,7 +47,7 @@ public class ConfigHandler {
 	//Get config contents by strings
 	public String getString(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + Money.instance.getDescription().getName() + " folder! (Try generating a new one by deleting the current)");
 			return "errorCouldNotLocateInConfigYml:" + key;
 		} else {
 			return money.getConfig().getString(key);
@@ -56,7 +56,7 @@ public class ConfigHandler {
 	
 	public String getStringWithColor(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + Money.instance.getDescription().getName() + " folder! (Try generating a new one by deleting the current)");
 			return "errorCouldNotLocateInConfigYml:" + key;
 		} else {
 			return money.getConfig().getString(key).replaceAll("&", "§");
@@ -65,7 +65,7 @@ public class ConfigHandler {
 	
 	public List<String> getStringList(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + Money.instance.getDescription().getName() + " folder! (Try generating a new one by deleting the current)");
 			return null;
 		} else {
 			return money.getConfig().getStringList(key);
@@ -74,7 +74,7 @@ public class ConfigHandler {
 	
 	public Integer getInteger(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + Money.instance.getDescription().getName() + " folder! (Try generating a new one by deleting the current)");
 			return null;
 		} else {
 			return money.getConfig().getInt(key);
@@ -83,7 +83,7 @@ public class ConfigHandler {
 	
 	public Boolean getBoolean(String key) {
 		if (!money.getConfig().contains(key)) {
-			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + money.pluginName + " folder! (Try generating a new one by deleting the current)");
+			money.getLogger().severe("Could not locate " + key + " in the config.yml inside of the " + Money.instance.getDescription().getName() + " folder! (Try generating a new one by deleting the current)");
 			return null;
 		} else {
 			return money.getConfig().getBoolean(key);
@@ -101,12 +101,6 @@ public class ConfigHandler {
 				return;
 			}
 			
-			if (player2 != null) {
-				if (!player2.equals("")) {
-					message.set(0, message.get(0).replaceAll("%player2", player2Name));
-				}
-			}
-			
 			DecimalFormat f = new DecimalFormat("#,##0.00");
 			
 			if (amount != null && !amount.equals("")) {
@@ -115,31 +109,31 @@ public class ConfigHandler {
 					DecimalFormat fr = new DecimalFormat("#,##0");
 					message.set(0, message.get(0).replaceAll("%amount", "" + fr.format(amountDouble)));
 				} else {
-				message.set(0, message.get(0).replaceAll("%amount", "" + f.format(amountDouble)));
+				    message.set(0, message.get(0).replaceAll("%amount", "" + f.format(amountDouble)));
 				}
 			}
-
-			message.set(0, message.get(0).replaceAll("%pocket", ""+Money.econ.getBalance(player)));
 			
-			if (money.getMoneyDatabaseInterface().hasAccount(player2)) 
-			{
-				if (money.getMoneyDatabaseInterface().getBalance(player2).toString().endsWith(".0")) {
-					DecimalFormat fr = new DecimalFormat("#,##0");
-					message.set(0, message.get(0).replaceAll("%balance", "" + fr.format(money.getMoneyDatabaseInterface().getBalance(player2))));
-				} else 
-				message.set(0, message.get(0).replaceAll("%balance", "" + f.format(money.getMoneyDatabaseInterface().getBalance(player2))));
-				} else {
-				message.set(0, message.get(0).replaceAll("%balance", "0.00"));
+			if (player2 != null) {
+				if (!player2Name.equals("")) {
+					message.set(0, message.get(0).replaceAll("%player2", player2Name));
 				}
-				
+				if (money.getMoneyDatabaseInterface().hasAccount(player2)) {
+					if (money.getMoneyDatabaseInterface().getBalance(player2).toString().endsWith(".0")) {
+						DecimalFormat fr = new DecimalFormat("#,##0");
+						message.set(0, message.get(0).replaceAll("%balance", "" + fr.format(money.getMoneyDatabaseInterface().getBalance(player2))));
+					} else  {
+					    message.set(0, message.get(0).replaceAll("%balance", "" + f.format(money.getMoneyDatabaseInterface().getBalance(player2))));
+					}
+					
+				}
+			}
+			
+			message.set(0, message.get(0).replaceAll("%pocket", ""+ Money.econ.getBalance(player)));
 			message.set(0, message.get(0).replaceAll("%player", player.getName()));
-			
-			if (player != null) {				
-				//Message format
-				player.sendMessage(parseFormattingCodes(getString("chatMessages.prefix")) + parseFormattingCodes(message.get(0)));
-				for (int i = 1; i < message.size(); i++) {
-					player.sendMessage(parseFormattingCodes(message.get(i)));
-				}
+			//Message format
+			player.sendMessage(parseFormattingCodes(getString("chatMessages.prefix")) + parseFormattingCodes(message.get(0)));
+			for (int i = 1; i < message.size(); i++) {
+				player.sendMessage(parseFormattingCodes(message.get(i)));
 			}
 			
 		} else {
@@ -160,18 +154,18 @@ public class ConfigHandler {
 		message = message.replaceAll("&7", ChatColor.GRAY + "");
 		message = message.replaceAll("&8", ChatColor.DARK_GRAY + "");
 		message = message.replaceAll("&9", ChatColor.BLUE + "");
-		message = message.replaceAll("(?i)&a", ChatColor.GREEN + "");
-		message = message.replaceAll("(?i)&b", ChatColor.AQUA + "");
-		message = message.replaceAll("(?i)&c", ChatColor.RED + "");
-		message = message.replaceAll("(?i)&d", ChatColor.LIGHT_PURPLE + "");
-		message = message.replaceAll("(?i)&e", ChatColor.YELLOW + "");
-		message = message.replaceAll("(?i)&f", ChatColor.WHITE + "");
-		message = message.replaceAll("(?i)&l", ChatColor.BOLD + "");
-		message = message.replaceAll("(?i)&o", ChatColor.ITALIC + "");
-		message = message.replaceAll("(?i)&m", ChatColor.STRIKETHROUGH + "");
-		message = message.replaceAll("(?i)&n", ChatColor.UNDERLINE + "");
-		message = message.replaceAll("(?i)&k", ChatColor.MAGIC + "");
-		message = message.replaceAll("(?i)&r", ChatColor.RESET + "");
+		message = message.replaceAll("&a", ChatColor.GREEN + "");
+		message = message.replaceAll("&b", ChatColor.AQUA + "");
+		message = message.replaceAll("&c", ChatColor.RED + "");
+		message = message.replaceAll("&d", ChatColor.LIGHT_PURPLE + "");
+		message = message.replaceAll("&e", ChatColor.YELLOW + "");
+		message = message.replaceAll("&f", ChatColor.WHITE + "");
+		message = message.replaceAll("&l", ChatColor.BOLD + "");
+		message = message.replaceAll("&o", ChatColor.ITALIC + "");
+		message = message.replaceAll("&m", ChatColor.STRIKETHROUGH + "");
+		message = message.replaceAll("&n", ChatColor.UNDERLINE + "");
+		message = message.replaceAll("&k", ChatColor.MAGIC + "");
+		message = message.replaceAll("&r", ChatColor.RESET + "");
 		return message;
 	}
 	

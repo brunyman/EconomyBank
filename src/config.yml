@@ -1,5 +1,5 @@
 # default config.yml for MysqlEconomyBank
-# config version 1.15.1
+# config version 1.16.0
 
 database:
     #Type of database, Options: FlatFile or MySQL
@@ -65,6 +65,66 @@ chatMessages:
     interest: '&bInterest credited: &7$%amount'
     interestCommand: '&bNext interest in:&7 %time'
     interestDisabled: '&cInterest feature is disabled!'
+    negativeAmount: '&cThe amount must be a positive number!'
+    #Console help messages - multi line support
+    consoleHelpMsg:
+    - ' '
+    - '&3-=-=-=-=-=-=-=-< &b&lMysqlEconomyBank&3 >-=-=-=-=-=-=-=-=-=-'
+    - ' '
+    - '&b        Check other players bank balance:'
+    - '&8>> &f/bank balance <playerName>&7 - for online players.'
+    - '&8>> &f/bank balance <playerUUID>&7 - for offline players.'
+    - '&7      Example: &f/bank balance John&7 or &f/bank balance f694517d-d6cf-32f1-972b-dfc677ceac45'
+    - ' '
+    - '&b        Set a players bank balance:'
+    - '&8>> &f/bank set <playerName> amount&7 - for online players.'
+    - '&8>> &f/bank set <playerUUID> amount&7 - for offline players.'
+    - '&7      Example: &f/bank set John 100&7 or &f/bank set f694517d-d6cf-32f1-972b-dfc677ceac45 100.5'
+    - ' '
+    - '&b        Reload plugin config:'
+    - '&8>> &f/bank reload'
+    - ' '
+    - '&3-=-=-=-=-=-=-=-=-< &b&lConsole Help Page&3 >-=-=-=-=-=-=-=-=-'
+    - ' '
+    #Player help message - multi line support.
+    playerHelpMessage:
+        Title:
+        - ' '
+        - '&3-=-=-=-=-=-=-=-< &b&lMysqlEconomyBank&3 >-=-=-=-=-=-=-=-=-'
+        Admin:
+        - ' '
+        - '&b        Check other players bank balance:'
+        - '&8&l>> &f/bank balance <playerName>&7 - for online players.'
+        - '&8&l>> &f/bank balance <playerUUID>&7 - for offline players.'
+        - '&7      Example: &f/bank balance John&7 or &f/bank balance f694517d-d6cf-32f1-972b-dfc677ceac45'
+        - ' '
+        - '&b        Set a players bank balance:'
+        - '&8&l>> &f/bank set <playerName> amount&7 - for online players.'
+        - '&8&l>> &f/bank set <playerUUID> amount&7 - for offline players.'
+        - '&7      Example: &f/bank set John 100&7 or &f/bank set f694517d-d6cf-32f1-972b-dfc677ceac45 100.5'
+        - ' '
+        - '&b        Reload plugin config:'
+        - '&8&l>> &f/bank reload'
+        - ' '
+        - '&3-=-=-=-=-=-=-=-=-< &b&lAdmin Help Page&3 >-=-=-=-=-=-=-=-=-'
+        BalancePerm:
+        - ' '
+        - '&b        Check your bank balance:'
+        - '&8&l>> &f/bank balance'
+        DepositPerm:
+        - '&b        Deposit money in your bank:'
+        - '&8&l>> &f/bank deposit <amount>'
+        WithdrawPerm:
+        - '&b        Withdraw money from your bank:'
+        - '&8&l>> &f/bank withdraw <amount>'
+        - ' '
+        NoPerms:
+        - ' '
+        - '&7&o>> &f/bank withdraw <amount>'
+        - '&7&lPlugin Download:&f http://goo.gl/EPf2R8'
+        - ' '
+        - '&3-=-=-=-=-=-=-=-=-=-< &b&lHelp Page&3 >-=-=-=-=-=-=-=-=-=-=-'
+        - ' '
     
 #Action Bar Messages - Requires TitleManager optional dependency.
 actionBarMessages:

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.craftersland.money.Money;
@@ -20,7 +21,10 @@ public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> 
 	}
 	
 	@Override
-	public boolean hasAccount(Player player) {
+	public boolean hasAccount(OfflinePlayer player) {
+		(new File("plugins"+System.getProperty("file.separator") + "MysqlEconomyBank" + System.getProperty("file.separator") + "Accounts" + System.getProperty("file.separator") + player.getUniqueId().toString() + ".yml")).exists();
+		
+		
 		return (new File("plugins"+System.getProperty("file.separator") + "MysqlEconomyBank" + System.getProperty("file.separator") + "Accounts" + System.getProperty("file.separator") + player.getUniqueId().toString() + ".yml")).exists();
 	}
 	
@@ -43,15 +47,15 @@ public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> 
 			return true;
 			
 		} catch (Exception e) {
-			money.getLogger().severe("Could not create Account file " + player + "!");
+			money.getLogger().severe("Could not create Account file " + player.getName() + "!");
 		}
 		return false;
 	}
 
 	@Override
-	public Double getBalance(Player player) {
+	public Double getBalance(OfflinePlayer player) {
 		if (!hasAccount(player)) {
-			createAccount(player);
+			createAccount(player.getPlayer());
 		}
 		
 		try {
@@ -65,7 +69,7 @@ public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> 
 			return balance;
 			
 		} catch (Exception e) {
-			money.getLogger().severe("Could not get Balance of " + player + "!");
+			money.getLogger().severe("Could not get Balance of " + player.getName() + "!");
 		}
 		return null;
 	}
@@ -89,9 +93,9 @@ public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> 
 	}
 
 	@Override
-	public boolean setBalance(Player player, Double amount) {
+	public boolean setBalance(OfflinePlayer player, Double amount) {
 		if (!hasAccount(player)) {
-			createAccount(player);
+			createAccount(player.getPlayer());
 		}
 		
 		try {
@@ -113,7 +117,7 @@ public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> 
 			return true;
 			
 		} catch (Exception e) {
-			money.getLogger().severe("Could not set Balance of "+player+"!");
+			money.getLogger().severe("Could not set Balance of "+player.getName()+"!");
 		}
 		return false;
 	}

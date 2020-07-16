@@ -30,12 +30,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Money extends JavaPlugin {
 	
 	public static Logger log;
+	public static Money instance;
 	public static Economy econ = null;
 	public static Permission perms = null;
 	public boolean is14Server = true;
 	public boolean is19Server = true;
 	public boolean is13Server = false;
-	public String pluginName = "MysqlEconomyBank";
+	//public String pluginName = "MysqlEconomyBank";
 	public Set<UUID> cooldown = new HashSet<UUID>();
 	
 	private static ConfigHandler cH;
@@ -54,6 +55,7 @@ public final class Money extends JavaPlugin {
 	@Override
     public void onEnable(){
     	log = getLogger();
+    	instance = this;
     	getMcVersion();	
     	
     	//Setup Vault for economy and permissions
@@ -87,7 +89,7 @@ public final class Money extends JavaPlugin {
         	if (!new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"Accounts").exists()) {
         		(new File("plugins"+System.getProperty("file.separator")+"MysqlEconomyBank"+System.getProperty("file.separator")+"Accounts")).mkdir();
         	}
-        	log.info(pluginName + " loaded successfully!");
+        	log.info(instance.getDescription().getName() + " loaded successfully!");
         	databaseManager = new DatabaseManagerFlatFile(this);
         	moneyDatabaseInterface = new MoneyFlatFileInterface(this);
         }
@@ -111,7 +113,7 @@ public final class Money extends JavaPlugin {
     	}
     	
     	enabled = true;
-    	log.info("MysqlEconomyBank has been successfully loaded!");
+    	log.info(instance.getDescription().getName() + " has been successfully loaded!");
 	}
 	
 	@Override
@@ -125,7 +127,7 @@ public final class Money extends JavaPlugin {
 				databaseManager.closeDatabase();
 			}
 		}
-		log.info(pluginName + " is disabled!");
+		log.info(instance.getDescription().getName() + " is disabled!");
     }
 	
 	private boolean getMcVersion() {
@@ -168,6 +170,11 @@ public final class Money extends JavaPlugin {
 	    	is14Server = true;
 	    	return true;
 	    } else if (version.matches("1.15") || version.matches("1.15.1") || version.matches("1.15.2")) {
+	    	is19Server = true;
+	    	is13Server = true;
+	    	is14Server = true;
+	    	return true;
+	    } else if (version.matches("1.16") || version.matches("1.16.1")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = true;

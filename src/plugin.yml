@@ -1,6 +1,6 @@
 name: MysqlEconomyBank
 main: net.craftersland.money.Money
-version: 1.15.1
+version: 1.16.0
 website: www.craftersland.net
 load: STARTUP
 depend: [Vault]
