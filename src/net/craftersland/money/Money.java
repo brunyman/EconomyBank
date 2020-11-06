@@ -27,12 +27,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
+
 public final class Money extends JavaPlugin {
 	
 	public static Logger log;
 	public static Money instance;
 	public static Economy econ = null;
 	public static Permission perms = null;
+	public static TitleManagerAPI titleAPI = null;
 	public boolean is14Server = true;
 	public boolean is19Server = true;
 	public boolean is13Server = false;
@@ -174,7 +177,7 @@ public final class Money extends JavaPlugin {
 	    	is13Server = true;
 	    	is14Server = true;
 	    	return true;
-	    } else if (version.matches("1.16") || version.matches("1.16.1") || version.matches("1.16.2") || version.matches("1.16.3")) {
+	    } else if (version.matches("1.16") || version.matches("1.16.1") || version.matches("1.16.2") || version.matches("1.16.3") || version.matches("1.16.4")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = true;
@@ -209,6 +212,7 @@ public final class Money extends JavaPlugin {
     //Check if TitleManager is available
     public boolean setupTitleManager() {
     	if (getServer().getPluginManager().getPlugin("TitleManager") != null) {
+    		titleAPI = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
         	return true;
         }
           else {

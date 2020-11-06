@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Plugins/1.14.2/Vault-1.7.2.jar"/>
-	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Plugins/1.14.4/TitleManager-2.1.5.jar"/>
 	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Plugins/1.14.4/PlaceholderAPI-2.10.4.jar"/>
-	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Server/spigot-1.16.3.jar"/>
+	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Server/spigot-1.16.4.jar"/>
+	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Plugins/1.16.4/TitleManager-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/DATA/ServerWorkspace/Spigot/Plugins/1.16.4/Vault-1.7.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

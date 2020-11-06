@@ -1,6 +1,5 @@
 package net.craftersland.money;
 
-import io.puharesource.mc.titlemanager.api.ActionbarTitleObject;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -196,12 +195,11 @@ public class ConfigHandler {
 			}
 			//send the action bar message
 			if (player != null) {
-			if (money.is19Server) {
-				player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message.get(0).replaceAll("&", "§")));
-			} else {
-				ActionbarTitleObject object = new ActionbarTitleObject(parseFormattingCodes(message.get(0)));
-				object.send(player);
-			}
+			    if (money.is19Server) {
+			     	player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message.get(0).replaceAll("&", "§")));
+			    } else if (Money.titleAPI != null) {
+				    Money.titleAPI.sendActionbar(player, parseFormattingCodes(message.get(0)));
+			    }
 			return;
 			}
 			
