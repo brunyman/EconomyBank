@@ -177,7 +177,7 @@ public final class Money extends JavaPlugin {
 	    	is13Server = true;
 	    	is14Server = true;
 	    	return true;
-	    } else if (version.matches("1.16") || version.matches("1.16.1") || version.matches("1.16.2") || version.matches("1.16.3") || version.matches("1.16.4")) {
+	    } else if (version.matches("1.16") || version.matches("1.16.1") || version.matches("1.16.2") || version.matches("1.16.3") || version.matches("1.16.4") || version.matches("1.16.5")) {
 	    	is19Server = true;
 	    	is13Server = true;
 	    	is14Server = true;
