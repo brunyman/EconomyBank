@@ -68,7 +68,15 @@ public class Placeholders extends PlaceholderExpansion {
         }
 
         // %someplugin_placeholder1%
-        if (identifier.equals("balance")) {
+	if (identifier.equals("balance")) {
+        	return String.valueOf(pl.getMoneyDatabaseInterface().getBalance(player));
+        }
+	    
+        if (identifier.equals("balance_fixed")) {
+        	return String.valueOf(int() pl.getMoneyDatabaseInterface().getBalance(player));
+        }
+	    
+        if (identifier.equals("balance_commas")) {
         	Double bal = pl.getMoneyDatabaseInterface().getBalance(player);
         	DecimalFormat f = new DecimalFormat("#,##0.00");
 			
