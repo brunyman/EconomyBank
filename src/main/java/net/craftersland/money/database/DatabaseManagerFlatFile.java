@@ -1,8 +1,8 @@
-package net.craftersland.database;
+package net.craftersland.money.database;
 
 import java.sql.Connection;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 
 public class DatabaseManagerFlatFile implements DatabaseManagerInterface {
 	

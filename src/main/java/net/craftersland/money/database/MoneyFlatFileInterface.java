@@ -1,4 +1,4 @@
-package net.craftersland.database;
+package net.craftersland.money.database;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 
 public class MoneyFlatFileInterface implements AccountDatabaseInterface<Double> {
 	

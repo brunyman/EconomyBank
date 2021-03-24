@@ -1,10 +1,10 @@
-package net.craftersland.commands;
+package net.craftersland.money.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 
 public class InterestCmd {
 	

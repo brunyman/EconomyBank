@@ -1,4 +1,4 @@
-package net.craftersland;
+package net.craftersland.money;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

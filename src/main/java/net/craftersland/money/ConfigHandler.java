@@ -1,4 +1,4 @@
-package net.craftersland;
+package net.craftersland.money;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

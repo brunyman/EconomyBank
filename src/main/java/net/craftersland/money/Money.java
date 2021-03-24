@@ -1,4 +1,4 @@
-package net.craftersland;
+package net.craftersland.money;
 
 import java.io.File;
 import java.util.HashSet;
@@ -6,18 +6,18 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import net.craftersland.commands.BalanceCmd;
-import net.craftersland.commands.DepositCmd;
-import net.craftersland.commands.InterestCmd;
-import net.craftersland.commands.ReloadCmd;
-import net.craftersland.commands.SetCmd;
-import net.craftersland.commands.WithdrawCmd;
-import net.craftersland.database.AccountDatabaseInterface;
-import net.craftersland.database.DatabaseManagerFlatFile;
-import net.craftersland.database.DatabaseManagerInterface;
-import net.craftersland.database.DatabaseManagerMysql;
-import net.craftersland.database.MoneyFlatFileInterface;
-import net.craftersland.database.MoneyMysqlInterface;
+import net.craftersland.money.commands.BalanceCmd;
+import net.craftersland.money.commands.DepositCmd;
+import net.craftersland.money.commands.InterestCmd;
+import net.craftersland.money.commands.ReloadCmd;
+import net.craftersland.money.commands.SetCmd;
+import net.craftersland.money.commands.WithdrawCmd;
+import net.craftersland.money.database.AccountDatabaseInterface;
+import net.craftersland.money.database.DatabaseManagerFlatFile;
+import net.craftersland.money.database.DatabaseManagerInterface;
+import net.craftersland.money.database.DatabaseManagerMysql;
+import net.craftersland.money.database.MoneyFlatFileInterface;
+import net.craftersland.money.database.MoneyMysqlInterface;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -83,7 +83,7 @@ public final class Money extends JavaPlugin {
         sH = new SoundHandler(this);
         
         //Setup Database
-        if (cH.getString("net.craftersland.database.typeOfDatabase").equalsIgnoreCase("mysql")) {
+        if (cH.getString("net.craftersland.money.database.typeOfDatabase").equalsIgnoreCase("mysql")) {
         	log.info("Using MySQL as Datasource...");
         	databaseManager = new DatabaseManagerMysql(this);
         	moneyDatabaseInterface = new MoneyMysqlInterface(this);
@@ -124,7 +124,7 @@ public final class Money extends JavaPlugin {
 		if (enabled == true) {
 			Bukkit.getScheduler().cancelTasks(this);
 			HandlerList.unregisterAll(this);
-			//Closing net.craftersland.database connection
+			//Closing net.craftersland.money.database connection
 			if (databaseManager.getConnection() != null) {
 				log.info("Closing MySQL connection...");
 				databaseManager.closeDatabase();

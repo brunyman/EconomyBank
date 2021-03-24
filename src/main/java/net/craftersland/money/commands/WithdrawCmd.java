@@ -1,6 +1,6 @@
-package net.craftersland.commands;
+package net.craftersland.money.commands;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

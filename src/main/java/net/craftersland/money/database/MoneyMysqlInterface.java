@@ -1,4 +1,4 @@
-package net.craftersland.database;
+package net.craftersland.money.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 
 public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 	
@@ -25,7 +25,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 		      try {		 
-		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
+		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
 		        
@@ -56,7 +56,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 		      try {		 
-		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
+		        String sql = "SELECT `player_uuid` FROM `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        preparedUpdateStatement.setString(1, playerUUID.toString());
 		        
@@ -86,7 +86,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {			 
-	        String sql = "INSERT INTO `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "`(`player_uuid`, `player_name`, `money`, `last_seen`, `sync_complete`) " + "VALUES(?, ?, ?, ?, ?)";
+	        String sql = "INSERT INTO `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "`(`player_uuid`, `player_name`, `money`, `last_seen`, `sync_complete`) " + "VALUES(?, ?, ?, ?, ?)";
 	        preparedStatement = conn.prepareStatement(sql);
 	        
 	        preparedStatement.setString(1, player.getUniqueId().toString());
@@ -120,7 +120,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 	      try {	 
-	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
+	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 	        
 	        preparedUpdateStatement = conn.prepareStatement(sql);
 	        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
@@ -152,7 +152,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 	      try {	 
-	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
+	        String sql = "SELECT `money` FROM `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` WHERE `player_uuid` = ? LIMIT 1";
 	        
 	        preparedUpdateStatement = conn.prepareStatement(sql);
 	        preparedUpdateStatement.setString(1, playerUUID.toString());
@@ -186,7 +186,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
         try {        	
-			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
+			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
 			preparedUpdateStatement = conn.prepareStatement(updateSql);
 			preparedUpdateStatement.setDouble(1, amount);
 			preparedUpdateStatement.setString(2, player.getUniqueId().toString());
@@ -212,7 +212,7 @@ public class MoneyMysqlInterface implements AccountDatabaseInterface <Double>{
 		Connection conn = money.getDatabaseManagerInterface().getConnection();
 		PreparedStatement preparedUpdateStatement = null;
         try {        	
-			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("net.craftersland.database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
+			String updateSql = "UPDATE `" + money.getConfigurationHandler().getString("net.craftersland.money.database.mysql.tableName") + "` " + "SET `money` = ?" + "WHERE `player_uuid` = ?";
 			preparedUpdateStatement = conn.prepareStatement(updateSql);
 			preparedUpdateStatement.setDouble(1, amount);
 			preparedUpdateStatement.setString(2, playerUUID.toString());

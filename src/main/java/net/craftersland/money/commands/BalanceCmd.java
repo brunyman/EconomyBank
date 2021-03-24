@@ -1,8 +1,8 @@
-package net.craftersland.commands;
+package net.craftersland.money.commands;
 
 import java.util.UUID;
 
-import net.craftersland.Money;
+import net.craftersland.money.Money;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

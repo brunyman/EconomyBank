@@ -2,9 +2,9 @@
 # config version 1.16.4
 
 database:
-    #Type of net.craftersland.database, Options: FlatFile or MySQL
+    #Type of net.craftersland.money.database, Options: FlatFile or MySQL
     typeOfDatabase: FlatFile
-    #MySQL net.craftersland.database type connection details.
+    #MySQL net.craftersland.money.database type connection details.
     mysql:
         host: 127.0.0.1
         port: 3306

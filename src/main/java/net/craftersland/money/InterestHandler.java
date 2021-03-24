@@ -1,4 +1,4 @@
-package net.craftersland;
+package net.craftersland.money;
 
 import java.util.ArrayList;
 import java.util.List;
