@@ -1,0 +1,150 @@
+# default config.yml for MysqlEconomyBank
+# config version 1.16.4
+
+database:
+    #Type of net.craftersland.database, Options: FlatFile or MySQL
+    typeOfDatabase: FlatFile
+    #MySQL net.craftersland.database type connection details.
+    mysql:
+        host: 127.0.0.1
+        port: 3306
+        databaseName: 'mydatabase'
+        tableName: 'meb_accounts'
+        user: 'admin'
+        password: 'cheesecake'
+        ssl: false
+
+#General settings
+general: 
+    #Maximum amount of money on players accounts
+    maxBankLimitMoney: 10000000
+    #Maximum amount of money in players pockets
+    maxPocketLimitMoney: 10000000
+    #Amount of time in milliseconds (1 second = 1000 milliseconds) a player has to wait between two sign interactions.
+    timeBetweenTwoInteractions: 1000
+    #Interest settings
+    interest:
+        #Enable bank accounts interest | (true or false)
+        enabled: false
+        #Interest amount in percentage. Example: 0.2% | 2% | 10%
+        percentageAmount: 0.5%
+        #Time between interest credit in minutes. (default 5 minutes)
+        interestTime: 5
+    
+#Chat prefix and messages
+chatMessages:
+    #Chat Prefix - Supports Color/Format codes - To disable the prefix set it like: prefix: ''
+    #Color and Format codes: http://minecraft.gamepedia.com/Classic_server_protocol#Color_Codes
+    prefix: '&3&l[Bank] '
+    
+    #Chat Messages - Supports Color/Format codes.
+    #The place holder  %amount  will get replaced by the money amount.
+    #The place holder  %player2  will get replaced by the players name.
+    #To disable any chat message set it to ''  Example: balance: ''
+    createdSignSuccessfully: '&bCreated sign succesfully!'
+    notAllowed: '&bYou do not have permission.'
+    removedSignSuccessfully: '&bSign removed!'
+    errorWhileCreatingSign: '&bCould not create Sign!'
+    balance: '&b%player2:&7 $%balance'
+    depositedSuccessfully: '&bDeposited &7$%amount &bsuccessfully!'
+    reachedMaximumMoneyInAccount: '&bReached Bank Account limit!'
+    notEnoughMoneyInPoket: '&bYou dont have &7$%amount &bin your pocket!'
+    withdrewSuccessfully: '&bWithdrew &7$%amount &bsuccessfully!'
+    reachedMaximumMoneyInPocket: '&bReached Limit of money in your pocket.'
+    notEnoughMoneyInAccount: '&bNot enough funds in the bank account! Balance:&7$%amount'
+    accountDoesNotExist: '&7%player2 &bdoes not have an account!'
+    tooFastInteraction: '&bYou cant interact with MysqlEconomyBank this often. Please wait for a moment...'
+    denyIfSneaking: '&bYou cant use the Bank signs if you are sneaking.'
+    noPermission: '&bYou do not have permission.'
+    reloadFail: '&bConfig reload failed!'
+    reloadComplete: '&bConfig reload complete!'
+    balanceCommand: '&7%player2 &bbalance: &7$%amount'
+    balanceCommandFail: '&bPlayer offline or wrong UUID!'
+    setCommandFail: '&bThe amount must be a number!'
+    setCommand: '&7%player2 &bbalance set to: &7$%amount'
+    interest: '&bInterest credited: &7$%amount'
+    interestCommand: '&bNext interest in:&7 %time'
+    interestDisabled: '&cInterest feature is disabled!'
+    negativeAmount: '&cThe amount must be a positive number!'
+    #Console help messages - multi line support
+    consoleHelpMsg:
+    - ' '
+    - '&3-=-=-=-=-=-=-=-< &b&lMysqlEconomyBank&3 >-=-=-=-=-=-=-=-=-=-'
+    - ' '
+    - '&b        Check other players bank balance:'
+    - '&8>> &f/bank balance <playerName>&7 - for online players.'
+    - '&8>> &f/bank balance <playerUUID>&7 - for offline players.'
+    - '&7      Example: &f/bank balance John&7 or &f/bank balance f694517d-d6cf-32f1-972b-dfc677ceac45'
+    - ' '
+    - '&b        Set a players bank balance:'
+    - '&8>> &f/bank set <playerName> amount&7 - for online players.'
+    - '&8>> &f/bank set <playerUUID> amount&7 - for offline players.'
+    - '&7      Example: &f/bank set John 100&7 or &f/bank set f694517d-d6cf-32f1-972b-dfc677ceac45 100.5'
+    - ' '
+    - '&b        Reload plugin config:'
+    - '&8>> &f/bank reload'
+    - ' '
+    - '&3-=-=-=-=-=-=-=-=-< &b&lConsole Help Page&3 >-=-=-=-=-=-=-=-=-'
+    - ' '
+    #Player help message - multi line support.
+    playerHelpMessage:
+        Title:
+        - ' '
+        - '&3-=-=-=-=-=-=-=-< &b&lMysqlEconomyBank&3 >-=-=-=-=-=-=-=-=-'
+        Admin:
+        - ' '
+        - '&b        Check other players bank balance:'
+        - '&8&l>> &f/bank balance <playerName>&7 - for online players.'
+        - '&8&l>> &f/bank balance <playerUUID>&7 - for offline players.'
+        - '&7      Example: &f/bank balance John&7 or &f/bank balance f694517d-d6cf-32f1-972b-dfc677ceac45'
+        - ' '
+        - '&b        Set a players bank balance:'
+        - '&8&l>> &f/bank set <playerName> amount&7 - for online players.'
+        - '&8&l>> &f/bank set <playerUUID> amount&7 - for offline players.'
+        - '&7      Example: &f/bank set John 100&7 or &f/bank set f694517d-d6cf-32f1-972b-dfc677ceac45 100.5'
+        - ' '
+        - '&b        Reload plugin config:'
+        - '&8&l>> &f/bank reload'
+        - ' '
+        - '&3-=-=-=-=-=-=-=-=-< &b&lAdmin Help Page&3 >-=-=-=-=-=-=-=-=-'
+        BalancePerm:
+        - ' '
+        - '&b        Check your bank balance:'
+        - '&8&l>> &f/bank balance'
+        DepositPerm:
+        - '&b        Deposit money in your bank:'
+        - '&8&l>> &f/bank deposit <amount>'
+        WithdrawPerm:
+        - '&b        Withdraw money from your bank:'
+        - '&8&l>> &f/bank withdraw <amount>'
+        - ' '
+        NoPerms:
+        - ' '
+        - '&7&o>> &f/bank withdraw <amount>'
+        - '&7&lPlugin Download:&f http://goo.gl/EPf2R8'
+        - ' '
+        - '&3-=-=-=-=-=-=-=-=-=-< &b&lHelp Page&3 >-=-=-=-=-=-=-=-=-=-=-'
+        - ' '
+    
+#Action Bar Messages - Requires TitleManager optional dependency.
+actionBarMessages:
+    #Supports color and format codes.
+    #The placeholder %bankBalance will be replaced with your bank balance.
+    #The placeholder %pocketBalance will be replaced with your pocket balance.
+    #To disable any of these messages set them to ''  Example: balance: ''
+    
+    #When performing deposit/withdraw operations the bank remaining balance will be displayed in an action bar message.
+    balanceLeft: '&3&lBank balance: &7$%bankBalance &f| &3&lPocket balance: &7$%pocketBalance'
+    #When clicking the bank balance signs the balance will be displayed on action bar as well.
+    balance: '&3&lBank balance: &7$%bankBalance'
+
+#Customize the bank signs
+signFormat:
+    #Change the balance, deposit and withdraw words on signs, useful for other language translation
+    #No color and format codes support here.
+    balance: Balance
+    deposit: Deposit
+    withdraw: Withdraw
+    #Change the color of the first line on signs [Bank], note that this color only applies to the first line on signs.
+    #Color codes are the same, but here you just remove the & in the front of color codes. Example: &3 => 3 ; Does not support format codes here.
+    signColor: 3
